@@ -2,6 +2,7 @@
 
 namespace FL\QBJSParserBundle\Service;
 
+use FL\QBJSParser\Parsed\Doctrine\ParsedRuleGroup;
 use FL\QBJSParser\Parser\Doctrine\DoctrineParser;
 use FL\QBJSParser\Serializer\JsonDeserializer;
 
@@ -45,9 +46,9 @@ class QBJSDoctrineParserService
     /**
      * @param string $jsonString
      * @param string $entityClassName
-     * @return array|\FL\QBJSParser\Parsed\Doctrine\ParsedRuleGroup
+     * @return ParsedRuleGroup
      */
-    public function parseJsonString(string $jsonString, string $entityClassName)
+    public function parseJsonString(string $jsonString, string $entityClassName) : ParsedRuleGroup
     {
         $doctrineParser = $this->newParser($entityClassName);
         return $doctrineParser->parse($this->jsonDeserializer->deserialize($jsonString));
