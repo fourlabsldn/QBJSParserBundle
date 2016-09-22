@@ -31,12 +31,12 @@ class QBJSDoctrineParserService
      */
     public function __construct(array $classesAndMappings, JsonDeserializer $jsonDeserializer)
     {
-        foreach($classesAndMappings as $classAndMappings){
-            foreach($classAndMappings['properties'] as $queryBuilderId => $entityProperty){
+        foreach ($classesAndMappings as $classAndMappings) {
+            foreach ($classAndMappings['properties'] as $queryBuilderId => $entityProperty) {
                 $this->classNameToMapping[$classAndMappings['class']][$queryBuilderId] = $entityProperty ? $entityProperty : $queryBuilderId;
             }
         }
-        foreach($this->classNameToMapping as $className => $queryBuilderFieldsToEntityProperties){
+        foreach ($this->classNameToMapping as $className => $queryBuilderFieldsToEntityProperties) {
             $this->classNameToDoctrineParser[$className] = new DoctrineParser($className, $queryBuilderFieldsToEntityProperties);
         }
 
@@ -60,8 +60,9 @@ class QBJSDoctrineParserService
      * @return DoctrineParser
      * @throws \DomainException
      */
-    private function newParser(string $className){
-        if(!array_key_exists($className, $this->classNameToDoctrineParser)){
+    private function newParser(string $className)
+    {
+        if (!array_key_exists($className, $this->classNameToDoctrineParser)) {
             throw new \DomainException(sprintf(
                 'You have requested a Doctrine Parser for %s, but you have not defined a mapping for it in your configuration',
                 $className
