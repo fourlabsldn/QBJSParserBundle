@@ -1,0 +1,30 @@
+{
+  "name": "fourlabs/qbjs-parser-bundle",
+  "version": "1.0",
+  "description": "This bundle is a Symfony wrapper for fourlabs/qbjs-parser.",
+  "license": "MIT",
+  "homepage": "https://github.com/fourlabsldn/QBJSParserBundle",
+  "keywords": [
+    "PHP","QBJSParser", "QBJSParserBundle", "QBJS",
+    "Parser", "Symfony", "Doctrine", "ORM",
+    "querybuilder.js", "querybuilder.js.org",
+    "jQuery-QueryBuilder", "jQuery", "QueryBuilder"
+  ],
+  "authors": [
+    {
+      "name": "Four Labs",
+      "email": "luis@fourlabs.co.uk",
+      "homepage": "https://fourlabs.co.uk/"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": "^7.0",
+    "fourlabs/qbjs-parser": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "FL\\QBJSParserBundle\\": ""
+    }
+  }
+}

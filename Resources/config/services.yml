@@ -1,0 +1,8 @@
+services:
+    qbjs_parser.json_deserializer:
+        class: FL\QBJSParser\Serializer\JsonDeserializer
+    qbjs_parser.doctrine_parser:
+        class: FL\QBJSParserBundle\Service\QBJSDoctrineParserService
+        arguments:
+            - "%qbjs_parser.doctrine_classes_and_mappings%"
+            - "@qbjs_parser.json_deserializer"
