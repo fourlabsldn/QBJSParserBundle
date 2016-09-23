@@ -11,9 +11,16 @@ class QBJSDoctrineParserService
     /**
      * @var array
      * Class Name is the $className argument used when constructing @see DoctrineParser
-     * Mapping is the $queryBuilderFieldsToEntityProperties when constructing @see DoctrineParser
+     * PropertiesMapping is the $queryBuilderFieldsToEntityProperties when constructing @see DoctrineParser
      */
-    private $classNameToMapping;
+    private $classNameToPropertiesMapping;
+
+    /**
+     * @var array
+     * Class Name is the $className argument used when constructing @see DoctrineParser
+     * AssociationMapping is the $queryBuilderFieldPrefixesToAssociationClasses when constructing @see DoctrineParser
+     */
+    private $classNameToAssociationMapping;
 
     /**
      * @var DoctrineParser[]
@@ -32,12 +39,15 @@ class QBJSDoctrineParserService
     public function __construct(array $classesAndMappings, JsonDeserializer $jsonDeserializer)
     {
         foreach ($classesAndMappings as $classAndMappings) {
-            foreach ($classAndMappings['properties'] as $queryBuilderId => $entityProperty) {
-                $this->classNameToMapping[$classAndMappings['class']][$queryBuilderId] = $entityProperty ? $entityProperty : $queryBuilderId;
+            foreach ($classAndMappings['properties'] as $queryBuilderField => $entityProperty) {
+                $this->classNameToPropertiesMapping[$classAndMappings['class']][$queryBuilderField] = $entityProperty ? $entityProperty : $queryBuilderField;
+            }
+            foreach ($classAndMappings['association_classes'] as $queryBuilderFieldPrefix => $associationClass) {
+                $this->classNameToAssociationMapping[$classAndMappings['class']][$queryBuilderFieldPrefix] = $associationClass;
             }
         }
-        foreach ($this->classNameToMapping as $className => $queryBuilderFieldsToEntityProperties) {
-            $this->classNameToDoctrineParser[$className] = new DoctrineParser($className, $queryBuilderFieldsToEntityProperties);
+        foreach ($this->classNameToPropertiesMapping as $className => $queryBuilderFieldsToEntityProperties) {
+            $this->classNameToDoctrineParser[$className] = new DoctrineParser($className, $queryBuilderFieldsToEntityProperties, $this->classNameToAssociationMapping[$className]);
         }
 
         $this->jsonDeserializer = $jsonDeserializer;
