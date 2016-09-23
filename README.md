@@ -26,9 +26,21 @@ qbjs_parser:
             properties: # required
                 # Keys sent by QueryBuilderJS in a jsonString
                 # Values should be visible property (public or by getter) in your entity
+                # They can also be associations and their properties
                 # Leave the value as null (~) to use the same value as the key
                 id: ~
                 priceValue: price
+                labels.id: ~
+                labels.name: ~
+                labels.authors.id: ~
+                labels.authors.address.line1: ~
+                author.id: ~
+            association_classes: # required
+                # Indicate the class for each of the associations in properties
+                labels: AppBundle\Entity\Labels 
+                labels.authors: AppBundle\Entity\Author
+                labels.authors.address: AppBundle\Entity\Address
+                author: AppBundle\Entity\Author
 ```
 
 ### Usage Example
