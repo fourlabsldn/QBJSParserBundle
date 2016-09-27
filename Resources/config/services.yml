@@ -6,3 +6,7 @@ services:
         arguments:
             - "%qbjs_parser.doctrine_classes_and_mappings%"
             - "@qbjs_parser.json_deserializer"
+    qbjs_parser.parser_query:
+        class: FL\QBJSParserBundle\Service\ParserQueryService
+        arguments:
+            - "%qbjs_parser.query_generators%"
