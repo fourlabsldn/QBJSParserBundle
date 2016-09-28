@@ -39,8 +39,11 @@ qbjs_parser:
                 -
                     id: specification.description
                     label: 'Product Specification: Description'
-                    type: string
-                    operators: [equal, not_equal, begins_with, not_begins_with, contains, not_contains, ends_with, not_ends_with,is_empty, is_not_empty, is_null, is_not_null]
+                    type: string # string, integer, double, date, time, datetime, boolean
+                    # omit operators and get sensible defaults
+                    # string operators [equal, not_equal, is_null, is_not_null,begins_with, not_begins_with, contains, not_contains, ends_with, not_ends_with, is_empty, is_not_empty]
+                    # numeric/date operators [equal, not_equal, is_null, is_not_null, less, less_or_equal, greater, greater_or_equal, between, not_between]
+                    # boolean operators [equal, not_equal, is_null, is_not_null]
                 -
                     id: price
                     label: 'Product Price'
