@@ -22,6 +22,7 @@ class BuildersService
         foreach ($buildersConfig as $builderId => $config) {
             $config['id'] = $builderId; // necessary for jQuery Query Builder
             $config['filters'] = $this->filtersDefaultOperators($config['filters']);
+            $config['filters'] = $this->filtersBooleanDefaults($config['filters']);
             $builder = new Builder();
             $builder
                 ->setClassName($config['class'])
@@ -127,6 +128,34 @@ class BuildersService
             $filters[$key] = $filter;
         }
 
+        return $filters;
+    }
+
+    /**
+     * @param array $filters
+     * @return array
+     */
+    private function filtersBooleanDefaults(array $filters) : array
+    {
+        foreach ($filters as $key => $filter) {
+            $builderType = $filter['type'];
+
+            switch ($builderType) {
+                case 'boolean' :
+                    $filter['values'] = [
+                        1 => 'Yes',
+                        0 => 'No',
+                    ];
+                    $filter['input'] = 'radio';
+                    $filter['colors'] = [
+                        1 => 'success',
+                        0 => 'danger',
+                    ];
+                    break;
+            }
+
+            $filters[$key] = $filter;
+        }
 
         return $filters;
     }
