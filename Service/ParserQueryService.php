@@ -17,14 +17,13 @@ class ParserQueryService
      */
     public function __construct(array $queryGenerators)
     {
-        $parserQueries = [];
         foreach ($queryGenerators as $generatorId => $generator) {
             $generator['id'] = $generatorId;
             $parserQuery = new ParserQuery();
             $parserQuery->setClassName($generator['class']);
             unset($generator['class']);
             $parserQuery->setJsonString(json_encode($generator));
-            $parserQueries[] = $parserQuery;
+            $this->parserQueries[] = $parserQuery;
         }
     }
 
