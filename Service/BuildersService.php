@@ -21,6 +21,7 @@ class BuildersService
         $this->validate($buildersConfig, $classesAndMappings);
         foreach ($buildersConfig as $builderId => $builderConfig) {
             $builderConfig['id'] = $builderId;
+            $buildersConfig['filters'] = $this->filtersDefaultOperators($buildersConfig['filters']);
             $builder = new Builder();
             $builder
                 ->setClassName($builderConfig['class'])
@@ -75,13 +76,56 @@ class BuildersService
                 }
             }
 
-            if(!$mappingClassFoundForBuilderClass){
+            if ( !$mappingClassFoundForBuilderClass) {
                 throw new \InvalidArgumentException(sprintf(
                     'Builder with class %s, but no corresponding mapping for this class',
                     $builderClass
                 ));
             }
         }
+    }
+
+    /**
+     * @param array $builderConfigFilters
+     * @return array
+     */
+    private function filtersDefaultOperators(array $builderConfigFilters) : array
+    {
+        foreach ($builderConfigFilters as $key => $filter) {
+            // give the filter default operators, according to its type
+            if (! array_key_exists('operators', $filter)) {
+                $builderType = $filter['type'];
+
+                switch ($builderType) {
+                    case 'string' :
+                        $filter['operators'] = [
+                            'equal', 'not_equal', 'is_null', 'is_not_null',
+                            'begins_with', 'not_begins_with', 'contains', 'not_contains', 'ends_with', 'not_ends_with', 'is_empty', 'is_not_empty', // specific to strings
+                        ];
+                        break;
+                    case 'integer' :
+                    case 'double' :
+                    case 'date' :
+                    case 'time' :
+                    case 'datetime' :
+                    $filter['operators'] = [
+                            'equal', 'not_equal', 'is_null', 'is_not_null',
+                            'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', // specific to numbers and dates
+                        ];
+                        break;
+                    case 'boolean' :
+                        $filter['operators'] = [
+                            'equal', 'not_equal',
+                            'is_null', 'is_not_null'
+                        ];
+                        break;
+                }
+            }
+            $builderConfigFilters[$key] = $filter;
+        }
+
+
+        return $builderConfigFilters;
     }
 
     /**

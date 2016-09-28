@@ -25,7 +25,7 @@ class Configuration implements ConfigurationInterface
                                         ->scalarNode('id')->isRequired()->cannotBeEmpty()->end()
                                         ->scalarNode('label')->isRequired()->cannotBeEmpty()->end()
                                         ->scalarNode('type')->isRequired()->cannotBeEmpty()->end()
-                                        ->arrayNode('operators')->isRequired()->cannotBeEmpty()
+                                        ->arrayNode('operators')->cannotBeEmpty()
                                             ->prototype('scalar')
                                             ->end()
                                         ->end()
