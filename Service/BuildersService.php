@@ -93,7 +93,10 @@ class BuildersService
     {
         foreach ($filters as $key => $filter) {
             // give the filter default operators, according to its type
-            if (! array_key_exists('operators', $filter)) {
+            if (
+                (! array_key_exists('operators', $filter)) ||
+                (empty($filter['operators']))
+            ) {
                 $builderType = $filter['type'];
 
                 switch ($builderType) {
@@ -108,7 +111,7 @@ class BuildersService
                     case 'date' :
                     case 'time' :
                     case 'datetime' :
-                    $filter['operators'] = [
+                        $filter['operators'] = [
                             'equal', 'not_equal', 'is_null', 'is_not_null',
                             'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', // specific to numbers and dates
                         ];
