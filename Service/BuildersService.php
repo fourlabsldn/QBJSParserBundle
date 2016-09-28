@@ -47,6 +47,7 @@ class BuildersService
                 ));
             }
             $builderClass = $config['class'];
+
             if (! class_exists($builderClass)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Builders Configuration: %s is not a valid class in builder with ID %s ',
@@ -54,10 +55,14 @@ class BuildersService
                     $builderId
                 ));
             }
-            foreach($classesAndMappings as $classAndMapping){
+
+            $mappingClassFoundForBuilderClass = false;
+            foreach ($classesAndMappings as $classAndMapping) {
                 $mappingClass = $classAndMapping['class'];
                 $mappingProperties = $classAndMapping['properties'];
-                if($builderClass === $mappingClass){
+                if ($builderClass === $mappingClass) {
+                    $mappingClassFoundForBuilderClass = true;
+
                     foreach($config['filters'] as $filter){
                         if (! array_key_exists($filter['id'], $mappingProperties) ){
                             throw new \InvalidArgumentException(sprintf(
@@ -68,6 +73,13 @@ class BuildersService
                         }
                     }
                 }
+            }
+
+            if(!$mappingClassFoundForBuilderClass){
+                throw new \InvalidArgumentException(sprintf(
+                    'Builder with class %s, but no corresponding mapping for this class',
+                    $builderClass
+                ));
             }
         }
     }
