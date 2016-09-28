@@ -6,10 +6,10 @@ This bundle is a symfony wrapper for the QBJSParser library. It has two useful s
     - This will parse a `$jsonString` coming from JQuery QueryBuilder, and a `$className`, into a `FL\QBJSParser\Parsed\Doctrine\ParsedRuleGroup`.
     - The `ParsedRuleGroup` has two properties, `$dqlString` and `$parameters`, accessible via getters. 
     - Use the `ParsedRuleGroup` properties, to create a Doctrine Query. 
-- `qbjs_parser.parser_query` based on class `FL\QBJSParserBundle\Service\ParserQueryService`
-    - Use the service's `getParserQueries()`, to fetch an array of `FL\QBJSParserBundle\Model\ParserQuery` instances.
-    - Each `ParserQuery` comes with three properties, accessible via getters, `$className`, `$jsonString`, and `$humanReadableName`.
-    - Use the properties of `ParserQuery`, to instantiate JQuery Query Builders in your front-end.
+- `qbjs_parser.filters_builders` based on class `FL\QBJSParserBundle\Service\BuildersService`
+    - Use the service's `getBuilders()`, to fetch an array of `FL\QBJSParserBundle\Model\Builder` instances.
+    - Each `Builder` comes with three properties, accessible via getters, `$className`, `$jsonString`, and `$humanReadableName`.
+    - Use the properties of a `Builder`, to instantiate a JQuery Query Builder in your front-end.
 
 ### Installation
 
@@ -31,7 +31,7 @@ This bundle is a symfony wrapper for the QBJSParser library. It has two useful s
 
 ```yml
 qbjs_parser:
-    query_generators: # these are used for the ParserQueryService
+    builders: # these are used for service qbjs_parser.builders
         product_report_builder:
             class: AppBundle\Entity\Product
             human_readable_name: 'Product Report Builder'
@@ -46,7 +46,7 @@ qbjs_parser:
                     label: 'Product Price'
                     type: double
                     operators: [equal, not_equal, less, less_or_equal, greater, greater_or_equal, between, not_between, is_null, is_not_null]
-    doctrine_classes_and_mappings: # only if you will be using the service "qbjs_parser.doctrine_parser"
+    doctrine_classes_and_mappings: # these are used for service qbjs_parser.doctrine_parser
         app_entity_product: # this key is for organizational purposes only
             class: AppBundle\Entity\Product # Class Name of a Doctrine Entity
             properties: # required
@@ -97,7 +97,7 @@ qbjs_parser:
     } 
 ```
 
-`qbjs_parser.parser_query`
+`qbjs_parser.builders`
 
 ```php
 <?php
@@ -111,10 +111,10 @@ qbjs_parser:
     {
         public function reportBuilderAction(Request $request)
         {
-             $parserQueries = $this->get('qbjs_parser.parser_query')->getParserQueries();
+             $builders = $this->get('qbjs_parser.builders')->getParserQueries();
                      
              return $this->render('default/index.html.twig', [
-                 'parser_queries' => $parserQueries,
+                 'builders' => $builders,
              ]);
              
              //...

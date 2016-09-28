@@ -22,7 +22,7 @@ class QBJSParserExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('qbjs_parser.query_generators', $config['query_generators']);
+        $container->setParameter('qbjs_parser.builders', $config['builders']);
         $container->setParameter('qbjs_parser.doctrine_classes_and_mappings', $config['doctrine_classes_and_mappings']);
 
 

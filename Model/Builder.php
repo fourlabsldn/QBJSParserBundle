@@ -2,7 +2,7 @@
 
 namespace FL\QBJSParserBundle\Model;
 
-class ParserQuery
+class Builder
 {
     /**
      * @var string
@@ -11,6 +11,7 @@ class ParserQuery
 
     /**
      * @var string
+     * Containing multiple filters that can be used to instantiate a Jquery QueryBuilder
      */
     private $jsonString;
 
@@ -29,9 +30,9 @@ class ParserQuery
 
     /**
      * @param string $className
-     * @return ParserQuery
+     * @return Builder
      */
-    public function setClassName(string $className): ParserQuery
+    public function setClassName(string $className): Builder
     {
         $this->className = $className;
 
@@ -48,9 +49,9 @@ class ParserQuery
 
     /**
      * @param string $jsonString
-     * @return ParserQuery
+     * @return Builder
      */
-    public function setJsonString(string $jsonString): ParserQuery
+    public function setJsonString(string $jsonString): Builder
     {
         $this->jsonString = $jsonString;
 
@@ -67,9 +68,9 @@ class ParserQuery
 
     /**
      * @param string $humanReadableName
-     * @return ParserQuery
+     * @return Builder
      */
-    public function setHumanReadableName(string $humanReadableName): ParserQuery
+    public function setHumanReadableName(string $humanReadableName): Builder
     {
         $this->humanReadableName = $humanReadableName;
 

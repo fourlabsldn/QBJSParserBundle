@@ -14,7 +14,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('query_generators')
+                ->arrayNode('builders')
                     ->prototype('array')->cannotBeEmpty()
                         ->children()
                             ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
