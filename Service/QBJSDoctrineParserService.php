@@ -13,14 +13,14 @@ class QBJSDoctrineParserService
      * Class Name is the $className argument used when constructing @see DoctrineParser
      * PropertiesMapping is the $queryBuilderFieldsToEntityProperties when constructing @see DoctrineParser
      */
-    private $classNameToPropertiesMapping = [];
+    private $classNameToPropertiesMapping;
 
     /**
      * @var array
      * Class Name is the $className argument used when constructing @see DoctrineParser
      * AssociationMapping is the $queryBuilderFieldPrefixesToAssociationClasses when constructing @see DoctrineParser
      */
-    private $classNameToAssociationMapping  = [];
+    private $classNameToAssociationMapping;
 
     /**
      * @var DoctrineParser[]
@@ -47,7 +47,12 @@ class QBJSDoctrineParserService
             }
         }
         foreach ($this->classNameToPropertiesMapping as $className => $queryBuilderFieldsToEntityProperties) {
-            $this->classNameToDoctrineParser[$className] = new DoctrineParser($className, $queryBuilderFieldsToEntityProperties, $this->classNameToAssociationMapping[$className]);
+            if(!array_key_exists($className, $this->classNameToAssociationMapping)){
+                $this->classNameToDoctrineParser[$className] = new DoctrineParser($className, $queryBuilderFieldsToEntityProperties, []);
+            }
+            else{
+                $this->classNameToDoctrineParser[$className] = new DoctrineParser($className, $queryBuilderFieldsToEntityProperties, $this->classNameToAssociationMapping[$className]);
+            }
         }
 
         $this->jsonDeserializer = $jsonDeserializer;
