@@ -33,7 +33,7 @@ This bundle is a symfony wrapper for the QBJSParser library. It has two useful s
 qbjs_parser:
     builders: # these are used for service qbjs_parser.builders
         product_report_builder:
-            class: AppBundle\Entity\Product
+            class: AppBundle\Entity\Product # this class must exist in doctrine_class_and_mappings
             human_readable_name: 'Product Report Builder'
             filters:
                 -
