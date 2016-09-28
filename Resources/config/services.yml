@@ -10,4 +10,4 @@ services:
         class: FL\QBJSParserBundle\Service\BuildersService
         arguments:
             - "%qbjs_parser.builders%"
-            - "@qbjs_parser.doctrine_parser"
+            - "%qbjs_parser.doctrine_classes_and_mappings%"
