@@ -4,7 +4,7 @@ namespace FL\QBJSParserBundle\Service;
 
 class ParserQueryService
 {
-    public function __construct(array $classesAndMappings)
+    public function __construct(array $queryGenerators)
     {
     }
 }
