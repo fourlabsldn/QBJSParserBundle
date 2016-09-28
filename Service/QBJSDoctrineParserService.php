@@ -47,10 +47,9 @@ class QBJSDoctrineParserService
             }
         }
         foreach ($this->classNameToPropertiesMapping as $className => $queryBuilderFieldsToEntityProperties) {
-            if(!array_key_exists($className, $this->classNameToAssociationMapping)){
+            if (!array_key_exists($className, $this->classNameToAssociationMapping)) {
                 $this->classNameToDoctrineParser[$className] = new DoctrineParser($className, $queryBuilderFieldsToEntityProperties, []);
-            }
-            else{
+            } else {
                 $this->classNameToDoctrineParser[$className] = new DoctrineParser($className, $queryBuilderFieldsToEntityProperties, $this->classNameToAssociationMapping[$className]);
             }
         }

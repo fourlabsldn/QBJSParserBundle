@@ -65,8 +65,8 @@ class BuildersService
                 if ($builderClass === $mappingClass) {
                     $mappingClassFoundForBuilderClass = true;
 
-                    foreach($config['filters'] as $filter){
-                        if (! array_key_exists($filter['id'], $mappingProperties) ){
+                    foreach ($config['filters'] as $filter) {
+                        if (! array_key_exists($filter['id'], $mappingProperties)) {
                             throw new \InvalidArgumentException(sprintf(
                                 'Builders Configuration: Invalid Mapping for filter with ID %s, in builder with ID %s ',
                                 $filter['id'],
@@ -77,7 +77,7 @@ class BuildersService
                 }
             }
 
-            if ( !$mappingClassFoundForBuilderClass) {
+            if (!$mappingClassFoundForBuilderClass) {
                 throw new \InvalidArgumentException(sprintf(
                     'Builder with class %s, but no corresponding mapping for this class',
                     $builderClass
@@ -101,23 +101,23 @@ class BuildersService
                 $builderType = $filter['type'];
 
                 switch ($builderType) {
-                    case 'string' :
+                    case 'string':
                         $filter['operators'] = [
                             'equal', 'not_equal', 'is_null', 'is_not_null',
                             'begins_with', 'not_begins_with', 'contains', 'not_contains', 'ends_with', 'not_ends_with', 'is_empty', 'is_not_empty', // specific to strings
                         ];
                         break;
-                    case 'integer' :
-                    case 'double' :
-                    case 'date' :
-                    case 'time' :
-                    case 'datetime' :
+                    case 'integer':
+                    case 'double':
+                    case 'date':
+                    case 'time':
+                    case 'datetime':
                         $filter['operators'] = [
                             'equal', 'not_equal', 'is_null', 'is_not_null',
                             'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', // specific to numbers and dates
                         ];
                         break;
-                    case 'boolean' :
+                    case 'boolean':
                         $filter['operators'] = [
                             'equal', 'not_equal',
                             'is_null', 'is_not_null'
@@ -141,7 +141,7 @@ class BuildersService
             $builderType = $filter['type'];
 
             switch ($builderType) {
-                case 'boolean' :
+                case 'boolean':
                     $filter['values'] = [
                         1 => 'Yes',
                         0 => 'No',
