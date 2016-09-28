@@ -1,5 +1,16 @@
 #QBJSParserBundle
 
+This bundle is a symfony wrapper for the QBJSParser library. It has two useful services:
+
+- `qbjs_parser.doctrine_parser` based on class `FL\QBJSParserBundle\Service\QBJSDoctrineParserService`
+    - This will parse a `$jsonString` coming from JQuery QueryBuilder, and a `$className`, into a `FL\QBJSParser\Parsed\Doctrine\ParsedRuleGroup`.
+    - The `ParsedRuleGroup` has two properties, `$dqlString` and `$parameters`, accessible via getters. 
+    - Use the `ParsedRuleGroup` properties, to create a Doctrine Query. 
+- `qbjs_parser.parser_query` based on class `FL\QBJSParserBundle\Service\ParserQueryService`
+    - Use the service's `getParserQueries()`, to fetch an array of `FL\QBJSParserBundle\Model\ParserQuery` instances.
+    - Each `ParserQuery` comes with three properties, accessible via getters, `$className`, `$jsonString`, and `$humanReadableName`.
+    - Use the properties of `ParserQuery`, to instantiate JQuery Query Builders in your front-end.
+
 ### Installation
 
 - `composer require fourlabs/qbjs-parser-bundle`
@@ -20,6 +31,21 @@
 
 ```yml
 qbjs_parser:
+    query_generators: # these are used for the ParserQueryService
+        product_report_builder:
+            class: AppBundle\Entity\Product
+            human_readable_name: 'Product Report Builder'
+            filters:
+                -
+                    id: specification.description
+                    label: 'Product Specification: Description'
+                    type: string
+                    operators: [equal, not_equal, begins_with, not_begins_with, contains, not_contains, ends_with, not_ends_with,is_empty, is_not_empty, is_null, is_not_null]
+                -
+                    id: price
+                    label: 'Product Price'
+                    type: double
+                    operators: [equal, not_equal, less, less_or_equal, greater, greater_or_equal, between, not_between, is_null, is_not_null]
     doctrine_classes_and_mappings: # only if you will be using the service "qbjs_parser.doctrine_parser"
         app_entity_product: # this key is for organizational purposes only
             class: AppBundle\Entity\Product # Class Name of a Doctrine Entity
@@ -43,7 +69,9 @@ qbjs_parser:
                 author: AppBundle\Entity\Author
 ```
 
-### Usage Example
+### Usage Example 
+
+`qbjs_parser.doctrine_parser`
 
 ```php
 <?php
@@ -66,7 +94,30 @@ qbjs_parser:
              
              //...
         }
-    }
-    
+    } 
+```
 
+`qbjs_parser.parser_query`
+
+```php
+<?php
+    namespace App\Controller;
+    
+    //...
+    use Symfony\Component\HttpFoundation\Request;
+    use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+    class ReportController extends Controller
+    {
+        public function reportBuilderAction(Request $request, string $jsonString)
+        {
+             $parserQueries = $this->get('qbjs_parser.parser_query')->getParserQueries();
+                     
+             return $this->render('default/index.html.twig', [
+                 'parser_queries' => $parserQueries,
+             ]);
+             
+             //...
+        }
+    } 
 ```
