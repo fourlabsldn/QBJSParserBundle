@@ -23,16 +23,16 @@ class BuildersService
      */
     public function __construct(array $builders, QBJSDoctrineParserService $qbjsParser)
     {
-        foreach ($builders as $generatorId => $generator) {
-            $generator['id'] = $generatorId;
+        foreach ($builders as $builderId => $builder) {
+            $builder['id'] = $builderId;
             $parserQuery = new Builder();
             $parserQuery
-                ->setClassName($generator['class'])
-                ->setHumanReadableName($generator['human_readable_name'])
+                ->setClassName($builder['class'])
+                ->setHumanReadableName($builder['human_readable_name'])
             ;
-            unset($generator['class']);
-            unset($generator['human_readable_name']);
-            $parserQuery->setJsonString(json_encode($generator));
+            unset($builder['class']);
+            unset($builder['human_readable_name']);
+            $parserQuery->setJsonString(json_encode($builder));
             $this->builders[] = $parserQuery;
         }
     }
