@@ -66,7 +66,7 @@ qbjs_parser:
                 author.id: ~
             association_classes: # required
                 # Indicate the class for each of the associations in properties
-                labels: AppBundle\Entity\Labels 
+                labels: AppBundle\Entity\Label
                 labels.authors: AppBundle\Entity\Author
                 labels.authors.address: AppBundle\Entity\Address
                 author: AppBundle\Entity\Author
