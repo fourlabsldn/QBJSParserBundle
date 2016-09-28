@@ -25,7 +25,7 @@ class QBJSDoctrineParserService
     /**
      * @var DoctrineParser[]
      */
-    private $classNameToDoctrineParser  = [];
+    private $classNameToDoctrineParser;
 
     /**
      * @var JsonDeserializer
