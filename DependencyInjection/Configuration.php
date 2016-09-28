@@ -18,6 +18,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')->cannotBeEmpty()
                         ->children()
                             ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('human_readable_name')->isRequired()->cannotBeEmpty()->end()
                             ->arrayNode('filters')->isRequired()->cannotBeEmpty()
                                 ->prototype('array')->cannotBeEmpty()
                                     ->children()

@@ -15,6 +15,11 @@ class ParserQuery
     private $jsonString;
 
     /**
+     * @var string
+     */
+    private $humanReadableName;
+
+    /**
      * @return string
      */
     public function getClassName(): string
@@ -48,6 +53,25 @@ class ParserQuery
     public function setJsonString(string $jsonString): ParserQuery
     {
         $this->jsonString = $jsonString;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHumanReadableName(): string
+    {
+        return $this->humanReadableName;
+    }
+
+    /**
+     * @param string $humanReadableName
+     * @return ParserQuery
+     */
+    public function setHumanReadableName(string $humanReadableName): ParserQuery
+    {
+        $this->humanReadableName = $humanReadableName;
 
         return $this;
     }

@@ -20,8 +20,12 @@ class ParserQueryService
         foreach ($queryGenerators as $generatorId => $generator) {
             $generator['id'] = $generatorId;
             $parserQuery = new ParserQuery();
-            $parserQuery->setClassName($generator['class']);
+            $parserQuery
+                ->setClassName($generator['class'])
+                ->setHumanReadableName($generator['human_readable_name'])
+            ;
             unset($generator['class']);
+            unset($generator['human_readable_name']);
             $parserQuery->setJsonString(json_encode($generator));
             $this->parserQueries[] = $parserQuery;
         }
