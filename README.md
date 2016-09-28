@@ -109,7 +109,7 @@ qbjs_parser:
 
     class ReportController extends Controller
     {
-        public function reportBuilderAction(Request $request, string $jsonString)
+        public function reportBuilderAction(Request $request)
         {
              $parserQueries = $this->get('qbjs_parser.parser_query')->getParserQueries();
                      
