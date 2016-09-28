@@ -19,17 +19,17 @@ class BuildersService
     public function __construct(array $buildersConfig, array $classesAndMappings)
     {
         $this->validate($buildersConfig, $classesAndMappings);
-        foreach ($buildersConfig as $builderId => $builderConfig) {
-            $builderConfig['id'] = $builderId;
-            $buildersConfig['filters'] = $this->filtersDefaultOperators($buildersConfig['filters']);
+        foreach ($buildersConfig as $builderId => $config) {
+            $config['id'] = $builderId; // necessary for jQuery Query Builder
+            $config['filters'] = $this->filtersDefaultOperators($config['filters']);
             $builder = new Builder();
             $builder
-                ->setClassName($builderConfig['class'])
-                ->setHumanReadableName($builderConfig['human_readable_name'])
+                ->setClassName($config['class'])
+                ->setHumanReadableName($config['human_readable_name'])
             ;
-            unset($builderConfig['class']);
-            unset($builderConfig['human_readable_name']);
-            $builder->setJsonString(json_encode($builderConfig));
+            unset($config['class']);
+            unset($config['human_readable_name']);
+            $builder->setJsonString(json_encode($config));
             $this->builders[] = $builder;
         }
     }
@@ -86,12 +86,12 @@ class BuildersService
     }
 
     /**
-     * @param array $builderConfigFilters
+     * @param array $filters
      * @return array
      */
-    private function filtersDefaultOperators(array $builderConfigFilters) : array
+    private function filtersDefaultOperators(array $filters) : array
     {
-        foreach ($builderConfigFilters as $key => $filter) {
+        foreach ($filters as $key => $filter) {
             // give the filter default operators, according to its type
             if (! array_key_exists('operators', $filter)) {
                 $builderType = $filter['type'];
@@ -121,11 +121,11 @@ class BuildersService
                         break;
                 }
             }
-            $builderConfigFilters[$key] = $filter;
+            $filters[$key] = $filter;
         }
 
 
-        return $builderConfigFilters;
+        return $filters;
     }
 
     /**
