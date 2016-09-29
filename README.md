@@ -124,3 +124,20 @@ qbjs_parser:
         }
     } 
 ```
+
+### Events
+
+The bundle also comes with events, that allow you to `qbjs_parser.builders`. You can currently override values, the input type, and operators.
+
+Here's an example of the configuration for a listener, for such events.
+
+```yaml
+services:
+    app.listener.override_builders:
+        class: AppBundle\EventListener\OverrideBuildersListener
+        arguments:
+        tags:
+            - { name: kernel.event_listener, event: qbjs_parser.filter_values_set, method: onValuesSet }
+            - { name: kernel.event_listener, event: qbjs_parser.filter_input_set, method: onInputSet }
+            - { name: kernel.event_listener, event: qbjs_parser.filter_operators_set, method: onOperatorsSet }
+```
