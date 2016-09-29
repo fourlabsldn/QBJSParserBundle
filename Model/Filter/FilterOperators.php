@@ -24,6 +24,22 @@ class FilterOperators
         return $this->operators;
     }
 
+
+    /**
+     * @param string[] $operators
+     * @return FilterOperators
+     * @throws \InvalidArgumentException
+     */
+    public function setOperators(array $operators): FilterOperators
+    {
+        foreach ($operators as $operator) {
+            $this->validateOperator($operator);
+        }
+        $this->operators = $operators;
+
+        return $this;
+    }
+
     /**
      * @param string $operator
      * @return FilterOperators
