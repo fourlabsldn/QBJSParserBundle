@@ -11,8 +11,8 @@ class FilterInput
     const INPUT_TYPE_SELECT = 'select';
 
     const VALID_INPUT_TYPES = [
-        self::INPUT_TYPE_TEXT, self::INPUT_TYPE_TEXTAREA, self:: INPUT_TYPE_TEXTAREA,
-        self::INPUT_TYPE_TEXTAREA, self::INPUT_TYPE_TEXTAREA
+        self::INPUT_TYPE_TEXT, self::INPUT_TYPE_TEXTAREA, self:: INPUT_TYPE_RADIO,
+        self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_SELECT
     ];
 
     /**
