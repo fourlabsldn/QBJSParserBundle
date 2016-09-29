@@ -190,7 +190,7 @@ class BuildersService
 
             $valuesArray =[];
             foreach($filterValueCollection->getFilterValues() as $filterValue){
-                $valuesArray[$filterValue->getLabel()] = $filterValue->getValue();
+                $valuesArray[$filterValue->getValue()] = $filterValue->getLabel();
             }
             $filters[$key]['values'] = $valuesArray;
             $filters[$key]['input'] = $filterInput->getInputType();
