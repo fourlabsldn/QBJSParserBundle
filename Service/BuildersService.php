@@ -6,6 +6,7 @@ use FL\QBJSParserBundle\Event\Filter\InputSetEvent;
 use FL\QBJSParserBundle\Event\Filter\ValuesSetEvent;
 use FL\QBJSParserBundle\Model\Builder;
 use FL\QBJSParserBundle\Model\Filter\FilterInput;
+use FL\QBJSParserBundle\Model\Filter\FilterOperators;
 use FL\QBJSParserBundle\Model\Filter\FilterValueCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -34,8 +35,8 @@ class BuildersService
         foreach ($buildersConfig as $builderId => $config) {
             $config['id'] = $builderId; // necessary for jQuery Query Builder
             $config['filters'] = $this->filtersDefaultOperators($config['filters']);
-            $config['filters'] = $this->filtersInjectValuesAndInput($config['filters'], $builderId);
-            $config['filters'] = $this->filtersBooleanDefaults($config['filters']); // override all booleans to display the same!
+            $config['filters'] = $this->filtersOverrides($config['filters'], $builderId);
+            $config['filters'] = $this->filtersBooleanOverride($config['filters']); // override all booleans to display the same!
             $builder = new Builder();
             $builder
                 ->setClassName($config['class'])
@@ -133,8 +134,7 @@ class BuildersService
                         break;
                     case 'boolean':
                         $filter['operators'] = [
-                            'equal', 'not_equal',
-                            'is_null', 'is_not_null'
+                            'equal', 'not_equal', 'is_null', 'is_not_null'
                         ];
                         break;
                 }
@@ -149,7 +149,7 @@ class BuildersService
      * @param array $filters
      * @return array
      */
-    private function filtersBooleanDefaults(array $filters) : array
+    private function filtersBooleanOverride(array $filters) : array
     {
         foreach ($filters as $key => $filter) {
             $builderType = $filter['type'];
@@ -180,12 +180,13 @@ class BuildersService
      * @return array
      *  @throws \LogicException
      */
-    private function filtersInjectValuesAndInput(array $filters, string $builderId) : array
+    private function filtersOverrides(array $filters, string $builderId) : array
     {
         foreach ($filters as $key => $filter) {
             $filterId = $filter['id'];
-            $filterValueCollection = $this->filterInjectValues($filterId, $builderId);
-            $filterInput = $this->filterInjectInput($filterId, $builderId);
+            $filterValueCollection = $this->filterOverrideValues($filterId, $builderId);
+            $filterInput = $this->filterOverrideInput($filterId, $builderId);
+            $filterOperators = $this->filterOverrideOperators($filterId, $builderId, $filter['operators']);
             $this->validateValueCollectionAgainstInput($filterValueCollection, $filterInput, $filterId, $builderId);
 
             $valuesArray =[];
@@ -194,6 +195,7 @@ class BuildersService
             }
             $filters[$key]['values'] = $valuesArray;
             $filters[$key]['input'] = $filterInput->getInputType();
+            $filters[$key]['operators'] = $filterOperators->getOperators();
         }
 
         return $filters;
@@ -204,7 +206,7 @@ class BuildersService
      * @param string $builderId
      * @return FilterValueCollection
      */
-    private function filterInjectValues(string $filterId, string $builderId) : FilterValueCollection
+    private function filterOverrideValues(string $filterId, string $builderId): FilterValueCollection
     {
         $filterValueCollection = new FilterValueCollection();
         $this->dispatcher->dispatch(ValuesSetEvent::EVENT_NAME, new ValuesSetEvent($filterValueCollection, $filterId, $builderId));
@@ -217,7 +219,7 @@ class BuildersService
      * @param string $builderId
      * @return FilterInput
      */
-    private function filterInjectInput(string $filterId, string $builderId) : FilterInput
+    private function filterOverrideInput(string $filterId, string $builderId): FilterInput
     {
         $filterInput = new FilterInput(FilterInput::INPUT_TYPE_TEXT);
         $this->dispatcher->dispatch(InputSetEvent::EVENT_NAME, new InputSetEvent($filterInput, $filterId, $builderId));
@@ -226,8 +228,27 @@ class BuildersService
     }
 
     /**
+     * @param string $filterId
+     * @param string $builderId
+     * @param string[] $filterOperatorsArray
+     * @return FilterOperators
+     */
+    private function filterOverrideOperators(string $filterId, string $builderId, array $filterOperatorsArray): FilterOperators
+    {
+        $filterOperators = new FilterOperators();
+        foreach($filterOperatorsArray as $key => $operator){
+            $filterOperators->addOperator($operator);
+        }
+        // @todo manipulate $filterOperators with event
+
+        return $filterOperators;
+    }
+
+    /**
      * @param FilterValueCollection $collection
      * @param FilterInput $input
+     * @param string $filterId
+     * @param string $builderId
      * @throws \LogicException
      */
     private function validateValueCollectionAgainstInput(FilterValueCollection $collection, FilterInput $input, string $filterId, string $builderId)
