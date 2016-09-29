@@ -237,7 +237,9 @@ class BuildersService
             $collection->getFilterValues()->count() !== 0
         ) {
             throw new \LogicException(sprintf(
-               'Too many values found, While building, Builder with ID %s and Filter with ID %s.'
+               'Too many values found, While building, Builder with ID %s and Filter with ID %s.',
+                $builderId,
+                $filterId
             ));
 
         }
@@ -246,7 +248,9 @@ class BuildersService
             $collection->getFilterValues()->count() === 0
         ) {
             throw new \LogicException(sprintf(
-                'Not enough values found, While building, Builder with ID %s and Filter with ID %s.'
+                'Not enough values found, While building, Builder with ID %s and Filter with ID %s.',
+                $builderId,
+                $filterId
             ));
 
         }
