@@ -2,9 +2,12 @@
 
 namespace FL\QBJSParserBundle\Service;
 
+use FL\QBJSParserBundle\Event\Filter\InputSetEvent;
+use FL\QBJSParserBundle\Event\Filter\ValuesSetEvent;
 use FL\QBJSParserBundle\Model\Builder;
 use FL\QBJSParserBundle\Model\Filter\FilterInput;
 use FL\QBJSParserBundle\Model\Filter\FilterValueCollection;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class BuildersService
 {
@@ -14,11 +17,16 @@ class BuildersService
     private $builders;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    /**
      * ParserQueryService constructor.
      * @param array $buildersConfig
      * @param array $classesAndMappings
      */
-    public function __construct(array $buildersConfig, array $classesAndMappings)
+    public function __construct(array $buildersConfig, array $classesAndMappings, EventDispatcherInterface $dispatcher)
     {
         $this->validate($buildersConfig, $classesAndMappings);
         foreach ($buildersConfig as $builderId => $config) {
@@ -36,6 +44,7 @@ class BuildersService
             $builder->setJsonString(json_encode($config));
             $this->builders[] = $builder;
         }
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -196,7 +205,8 @@ class BuildersService
     private function filterInjectValues(string $filterId, string $builderId) : FilterValueCollection
     {
         $filterValueCollection = new FilterValueCollection();
-        // @todo manipulate $filterValueCollection with event
+        $this->dispatcher->dispatch(ValuesSetEvent::EVENT_NAME, new ValuesSetEvent($filterValueCollection, $filterId, $builderId));
+
         return $filterValueCollection;
     }
 
@@ -208,7 +218,8 @@ class BuildersService
     private function filterInjectInput(string $filterId, string $builderId) : FilterInput
     {
         $filterInput = new FilterInput(FilterInput::INPUT_TYPE_TEXT);
-        // @todo manipulate $filterInput with event
+        $this->dispatcher->dispatch(InputSetEvent::EVENT_NAME, new InputSetEvent($filterInput, $filterId, $builderId));
+
         return $filterInput;
     }
 
