@@ -3,6 +3,7 @@
 namespace FL\QBJSParserBundle\Service;
 
 use FL\QBJSParserBundle\Event\Filter\InputSetEvent;
+use FL\QBJSParserBundle\Event\Filter\OperatorsSetEvent;
 use FL\QBJSParserBundle\Event\Filter\ValuesSetEvent;
 use FL\QBJSParserBundle\Model\Builder;
 use FL\QBJSParserBundle\Model\Filter\FilterInput;
@@ -239,7 +240,7 @@ class BuildersService
         foreach($filterOperatorsArray as $key => $operator){
             $filterOperators->addOperator($operator);
         }
-        // @todo manipulate $filterOperators with event
+        $this->dispatcher->dispatch(OperatorsSetEvent::EVENT_NAME, new OperatorsSetEvent($filterOperators, $filterId, $builderId));
 
         return $filterOperators;
     }
