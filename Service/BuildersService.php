@@ -188,7 +188,7 @@ class BuildersService
             switch ($builderType) {
                 case 'date':
                     $filter['validation'] = [
-                        'format' => 'YYY/MM/DD'
+                        'format' => 'YYYY/MM/DD'
                     ];
                     $filter['plugin'] = 'datepicker';
                     $filter['plugin_config'] = [
