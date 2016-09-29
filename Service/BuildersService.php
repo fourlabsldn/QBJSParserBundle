@@ -205,7 +205,7 @@ class BuildersService
 
         // @todo manipulate $filterInput with event
 
-        return $filterInput;
+        return $filterInput->getInputType();
     }
 
     /**
