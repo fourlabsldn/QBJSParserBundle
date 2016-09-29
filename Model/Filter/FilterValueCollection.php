@@ -15,6 +15,17 @@ class FilterValueCollection
     }
 
     /**
+     * @return FilterValueCollection
+     */
+    public function clearAllFilterValues()
+    {
+        $this->filterValues = new \SplObjectStorage();
+
+        return $this;
+    }
+
+
+    /**
      * @param FilterValue $filterValue
      * @return FilterValueCollection
      */
