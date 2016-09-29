@@ -25,9 +25,11 @@ class BuildersService
      * ParserQueryService constructor.
      * @param array $buildersConfig
      * @param array $classesAndMappings
+     * @param EventDispatcherInterface $dispatcher
      */
     public function __construct(array $buildersConfig, array $classesAndMappings, EventDispatcherInterface $dispatcher)
     {
+        $this->dispatcher = $dispatcher; // important that this goes before it's being used later in the constructor
         $this->validate($buildersConfig, $classesAndMappings);
         foreach ($buildersConfig as $builderId => $config) {
             $config['id'] = $builderId; // necessary for jQuery Query Builder
