@@ -168,12 +168,22 @@ class BuildersService
      * @param array $filters
      * @param string $builderId
      * @return array
+     *  @throws \LogicException
      */
     private function filtersInjectValuesAndInput(array $filters, string $builderId) : array
     {
         foreach ($filters as $key => $filter) {
-            $filters[$key]['values'] = $this->filterInjectValues($filter['id'], $builderId);
-            $filters[$key]['input'] = $this->filterInjectInput($filter['id'], $builderId);
+            $filterId = $filter['id'];
+            $filterValueCollection = $this->filterInjectValues($filterId, $builderId);
+            $filterInput = $this->filterInjectInput($filterId, $builderId);
+            $this->validateValueCollectionAgainstInput($filterValueCollection, $filterInput, $filterId, $builderId);
+
+            $valuesArray =[];
+            foreach($filterValueCollection as $filterValue){
+                $valuesArray[$filterValue->getLabel()] = $filterValue->getValue();
+            }
+            $filters[$key]['values'] = $valuesArray;
+            $filters[$key]['input'] = $filterInput->getInputType();
         }
 
         return $filters;
@@ -184,28 +194,50 @@ class BuildersService
      * @param string $builderId
      * @return array
      */
-    private function filterInjectValues(string $filterId, string $builderId) : array
+    private function filterInjectValues(string $filterId, string $builderId) : FilterValueCollection
     {
-        $valuesArray =[];
         $filterValueCollection = new FilterValueCollection();
-
         // @todo manipulate $filterValueCollection with event
-
-        /** @var FilterValue[] $filterValueCollection */
-        foreach($filterValueCollection as $filterValue){
-            $valuesArray[$filterValue->getLabel()] = $filterValue->getValue();
-        }
-
-        return $valuesArray;
+        return $filterValueCollection;
     }
 
-    private function filterInjectInput(string $filterId, string $builderId) : string
+    /**
+     * @param string $filterId
+     * @param string $builderId
+     * @return FilterInput
+     */
+    private function filterInjectInput(string $filterId, string $builderId) : FilterInput
     {
         $filterInput = new FilterInput(FilterInput::INPUT_TYPE_TEXT);
-
         // @todo manipulate $filterInput with event
+        return $filterInput;
+    }
 
-        return $filterInput->getInputType();
+    /**
+     * @param FilterValueCollection $collection
+     * @param FilterInput $input
+     * @throws \LogicException
+     */
+    private function validateValueCollectionAgainstInput(FilterValueCollection $collection, FilterInput $input, string $filterId, string $builderId)
+    {
+        if (
+            in_array($input->getInputType(), FilterInput::INPUT_TYPES_REQUIRE_NO_VALUES) &&
+            $collection->getFilterValues()->count() !== 0
+        ) {
+            throw new \LogicException(sprintf(
+               'Too many values found, While building, Builder with ID %s and Filter with ID %s.'
+            ));
+
+        }
+        if (
+            in_array($input->getInputType(), FilterInput::INPUT_TYPES_REQUIRE_MULTIPLE_VALUES) &&
+            $collection->getFilterValues()->count() === 0
+        ) {
+            throw new \LogicException(sprintf(
+                'Not enough values found, While building, Builder with ID %s and Filter with ID %s.'
+            ));
+
+        }
     }
 
     /**

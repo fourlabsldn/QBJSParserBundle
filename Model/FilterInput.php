@@ -15,6 +15,14 @@ class FilterInput
         self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_SELECT
     ];
 
+    const INPUT_TYPES_REQUIRE_NO_VALUES = [
+        self::INPUT_TYPE_TEXT, self::INPUT_TYPE_TEXTAREA,
+    ];
+
+    const INPUT_TYPES_REQUIRE_MULTIPLE_VALUES = [
+        self:: INPUT_TYPE_RADIO, self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_SELECT
+    ];
+
     /**
      * @var string
      */
