@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class ValuesSetEvent extends Event
 {
-    const EVENT_NAME = 'qbjs_parser.filter_value_set';
+    const EVENT_NAME = 'qbjs_parser.filter_values_set';
 
     /**
      * @var FilterValueCollection
