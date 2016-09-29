@@ -3,6 +3,9 @@
 namespace FL\QBJSParserBundle\Service;
 
 use FL\QBJSParserBundle\Model\Builder;
+use FL\QBJSParserBundle\Model\FilterInput;
+use FL\QBJSParserBundle\Model\FilterValue;
+use FL\QBJSParserBundle\Model\FilterValueCollection;
 
 class BuildersService
 {
@@ -23,6 +26,7 @@ class BuildersService
             $config['id'] = $builderId; // necessary for jQuery Query Builder
             $config['filters'] = $this->filtersDefaultOperators($config['filters']);
             $config['filters'] = $this->filtersBooleanDefaults($config['filters']);
+            $config['filters'] = $this->filtersInjectValuesAndInput($config['filters'], $builderId);
             $builder = new Builder();
             $builder
                 ->setClassName($config['class'])
@@ -158,6 +162,50 @@ class BuildersService
         }
 
         return $filters;
+    }
+
+    /**
+     * @param array $filters
+     * @param string $builderId
+     * @return array
+     */
+    private function filtersInjectValuesAndInput(array $filters, string $builderId) : array
+    {
+        foreach ($filters as $key => $filter) {
+            $filters[$key]['values'] = $this->filterInjectValues($filter['id'], $builderId);
+            $filters[$key]['input'] = $this->filterInjectInput($filter['id'], $builderId);
+        }
+
+        return $filters;
+    }
+
+    /**
+     * @param string $filterId
+     * @param string $builderId
+     * @return array
+     */
+    private function filterInjectValues(string $filterId, string $builderId) : array
+    {
+        $valuesArray =[];
+        $filterValueCollection = new FilterValueCollection();
+
+        // @todo manipulate $filterValueCollection with event
+
+        /** @var FilterValue[] $filterValueCollection */
+        foreach($filterValueCollection as $filterValue){
+            $valuesArray[$filterValue->getLabel()] = $filterValue->getValue();
+        }
+
+        return $valuesArray;
+    }
+
+    private function filterInjectInput(string $filterId, string $builderId) : string
+    {
+        $filterInput = new FilterInput(FilterInput::INPUT_TYPE_TEXT);
+
+        // @todo manipulate $filterInput with event
+
+        return $filterInput;
     }
 
     /**
