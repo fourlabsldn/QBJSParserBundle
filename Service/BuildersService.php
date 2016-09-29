@@ -3,9 +3,8 @@
 namespace FL\QBJSParserBundle\Service;
 
 use FL\QBJSParserBundle\Model\Builder;
-use FL\QBJSParserBundle\Model\FilterInput;
-use FL\QBJSParserBundle\Model\FilterValue;
-use FL\QBJSParserBundle\Model\FilterValueCollection;
+use FL\QBJSParserBundle\Model\Filter\FilterInput;
+use FL\QBJSParserBundle\Model\Filter\FilterValueCollection;
 
 class BuildersService
 {

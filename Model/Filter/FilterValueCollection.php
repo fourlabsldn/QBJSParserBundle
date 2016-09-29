@@ -1,6 +1,6 @@
 <?php
 
-namespace FL\QBJSParserBundle\Model;
+namespace FL\QBJSParserBundle\Model\Filter;
 
 class FilterValueCollection
 {
