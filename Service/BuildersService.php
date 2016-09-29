@@ -25,8 +25,8 @@ class BuildersService
         foreach ($buildersConfig as $builderId => $config) {
             $config['id'] = $builderId; // necessary for jQuery Query Builder
             $config['filters'] = $this->filtersDefaultOperators($config['filters']);
-            $config['filters'] = $this->filtersBooleanDefaults($config['filters']);
             $config['filters'] = $this->filtersInjectValuesAndInput($config['filters'], $builderId);
+            $config['filters'] = $this->filtersBooleanDefaults($config['filters']); // override all booleans to display the same!
             $builder = new Builder();
             $builder
                 ->setClassName($config['class'])
