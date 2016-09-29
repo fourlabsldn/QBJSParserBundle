@@ -23,7 +23,8 @@
     "fourlabs/qbjs-parser": "dev-master",
     "symfony/config": "~2.8|~3.0|~3.1",
     "symfony/dependency-injection": "~2.8|~3.0|~3.1",
-    "symfony/http-kernel": "~2.8|~3.0|~3.1"
+    "symfony/http-kernel": "~2.8|~3.0|~3.1",
+    "symfony/event-dispatcher": "~2.8|~3.0|~3.1"
   },
   "autoload": {
     "psr-4": {
