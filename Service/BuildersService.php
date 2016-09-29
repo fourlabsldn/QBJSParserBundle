@@ -179,7 +179,7 @@ class BuildersService
             $this->validateValueCollectionAgainstInput($filterValueCollection, $filterInput, $filterId, $builderId);
 
             $valuesArray =[];
-            foreach($filterValueCollection as $filterValue){
+            foreach($filterValueCollection->getFilterValues() as $filterValue){
                 $valuesArray[$filterValue->getLabel()] = $filterValue->getValue();
             }
             $filters[$key]['values'] = $valuesArray;
@@ -192,7 +192,7 @@ class BuildersService
     /**
      * @param string $filterId
      * @param string $builderId
-     * @return array
+     * @return FilterValueCollection
      */
     private function filterInjectValues(string $filterId, string $builderId) : FilterValueCollection
     {
