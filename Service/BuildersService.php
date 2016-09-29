@@ -38,6 +38,7 @@ class BuildersService
             $config['filters'] = $this->filtersDefaultOperators($config['filters']);
             $config['filters'] = $this->filtersOverrides($config['filters'], $builderId);
             $config['filters'] = $this->filtersBooleanOverride($config['filters']); // override all booleans to display the same!
+            $config['filters'] = $this->filtersDateOverrides($config['filters']); // override all dates to display the same!
             $builder = new Builder();
             $builder
                 ->setClassName($config['class'])
@@ -165,6 +166,36 @@ class BuildersService
                     $filter['colors'] = [
                         1 => 'success',
                         0 => 'danger',
+                    ];
+                    break;
+            }
+
+            $filters[$key] = $filter;
+        }
+
+        return $filters;
+    }
+
+    /**
+     * @param array $filters
+     * @return array
+     */
+    private function filtersDateOverrides(array $filters) : array
+    {
+        foreach ($filters as $key => $filter) {
+            $builderType = $filter['type'];
+
+            switch ($builderType) {
+                case 'date':
+                    $filter['validation'] = [
+                        'format' => 'YYY/MM/DD'
+                    ];
+                    $filter['plugin'] = 'datepicker';
+                    $filter['plugin_config'] = [
+                        'format' => 'yyyy/mm/dd',
+                        'todayBtn' => 'linked',
+                        'todayHighlight' => true,
+                        'autoclose' => true,
                     ];
                     break;
             }
