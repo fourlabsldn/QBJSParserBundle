@@ -190,12 +190,27 @@ class BuildersService
                     $filter['validation'] = [
                         'format' => 'YYYY/MM/DD'
                     ];
-                    $filter['plugin'] = 'datepicker';
+                    $filter['plugin'] = 'datetimepicker';
                     $filter['plugin_config'] = [
-                        'format' => 'yyyy/mm/dd',
-                        'todayBtn' => 'linked',
-                        'todayHighlight' => true,
-                        'autoclose' => true,
+                        'format' => 'YYYY/MM/DD',
+                    ];
+                    break;
+                case 'datetime':
+                    $filter['validation'] = [
+                        'format' => 'YYYY/MM/DD HH:mm'
+                    ];
+                    $filter['plugin'] = 'datetimepicker';
+                    $filter['plugin_config'] = [
+                        'format' => 'YYYY/MM/DD HH:mm',
+                    ];
+                    break;
+                case 'time':
+                    $filter['validation'] = [
+                        'format' => 'HH:mm'
+                    ];
+                    $filter['plugin'] = 'datetimepicker';
+                    $filter['plugin_config'] = [
+                        'format' => 'HH:mm',
                     ];
                     break;
             }
@@ -290,7 +305,7 @@ class BuildersService
             $collection->getFilterValues()->count() !== 0
         ) {
             throw new \LogicException(sprintf(
-               'Too many values found, While building, Builder with ID %s and Filter with ID %s.',
+                'Too many values found, While building, Builder with ID %s and Filter with ID %s.',
                 $builderId,
                 $filterId
             ));
