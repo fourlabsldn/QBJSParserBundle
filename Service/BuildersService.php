@@ -177,6 +177,9 @@ class BuildersService
     }
 
     /**
+     * Use with @link https://eonasdan.github.io/bootstrap-datetimepicker/
+     * Also make sure to account for @link https://github.com/mistic100/jQuery-QueryBuilder/issues/176
+     *
      * @param array $filters
      * @return array
      */
