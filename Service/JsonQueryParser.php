@@ -6,7 +6,7 @@ use FL\QBJSParser\Parsed\Doctrine\ParsedRuleGroup;
 use FL\QBJSParser\Parser\Doctrine\DoctrineParser;
 use FL\QBJSParser\Serializer\JsonDeserializer;
 
-class QBJSDoctrineParserService
+class JsonQueryParser
 {
     /**
      * @var array

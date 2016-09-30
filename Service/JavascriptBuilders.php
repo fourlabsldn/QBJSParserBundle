@@ -11,7 +11,7 @@ use FL\QBJSParserBundle\Model\Filter\FilterOperators;
 use FL\QBJSParserBundle\Model\Filter\FilterValueCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class BuildersService
+class JavascriptBuilders
 {
     /**
      * @var Builder[]

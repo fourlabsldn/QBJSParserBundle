@@ -2,11 +2,11 @@
 
 This bundle is a symfony wrapper for the QBJSParser library. It has two useful services:
 
-- `qbjs_parser.doctrine_parser` based on class `FL\QBJSParserBundle\Service\QBJSDoctrineParserService`
+- `qbjs_parser.json_query_parser` based on class `FL\QBJSParserBundle\Service\JsonQueryParser`
     - This will parse a `$jsonString` coming from JQuery QueryBuilder, and a `$className`, into a `FL\QBJSParser\Parsed\Doctrine\ParsedRuleGroup`.
     - The `ParsedRuleGroup` has two properties, `$dqlString` and `$parameters`, accessible via getters. 
     - Use the `ParsedRuleGroup` properties, to create a Doctrine Query. 
-- `qbjs_parser.filters_builders` based on class `FL\QBJSParserBundle\Service\BuildersService`
+- `qbjs_parser.builders` based on class `FL\QBJSParserBundle\Service\JavascriptBuilders`
     - Use the service's `getBuilders()`, to fetch an array of `FL\QBJSParserBundle\Model\Builder` instances.
     - Each `Builder` comes with three properties, accessible via getters, `$className`, `$jsonString`, and `$humanReadableName`.
     - Use the properties of a `Builder`, to instantiate a JQuery Query Builder in your front-end.
@@ -49,7 +49,7 @@ qbjs_parser:
                     label: 'Product Price'
                     type: double
                     operators: [equal, not_equal, less, less_or_equal, greater, greater_or_equal, between, not_between, is_null, is_not_null]
-    doctrine_classes_and_mappings: # these are used for service qbjs_parser.doctrine_parser
+    doctrine_classes_and_mappings: # these are used for service qbjs_parser.json_query_parser
         app_entity_product: # this key is for organizational purposes only
             class: AppBundle\Entity\Product # Class Name of a Doctrine Entity
             properties: # required
@@ -74,7 +74,7 @@ qbjs_parser:
 
 ### Usage Example 
 
-`qbjs_parser.doctrine_parser`
+`qbjs_parser.json_query_parser`
 
 ```php
 <?php
@@ -89,7 +89,7 @@ qbjs_parser:
     {
         public function reportsAction(Request $request, string $jsonString)
         {
-             $parsedRuleGroup = $this->get('qbjs_parser.doctrine_parser')->parseJsonString($jsonString, Product::class);
+             $parsedRuleGroup = $this->get('qbjs_parser.json_query_parser')->parseJsonString($jsonString, Product::class);
              
              $query = $this->get('doctrine.orm.entity_manager')->createQuery($parsedRuleGroup->getDqlString());
              $query->setParameters($parsedRuleGroup->getParameters());
