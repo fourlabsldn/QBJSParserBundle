@@ -120,7 +120,7 @@ class JavascriptBuilders
                 switch ($builderType) {
                     case 'string':
                         $filter['operators'] = [
-                            'equal', 'not_equal', 'is_null', 'is_not_null', 'in', 'not_in',
+                            'equal', 'not_equal', 'is_null', 'is_not_null',
                             'begins_with', 'not_begins_with', 'contains', 'not_contains', 'ends_with', 'not_ends_with', 'is_empty', 'is_not_empty', // specific to strings
                         ];
                         break;
@@ -130,7 +130,7 @@ class JavascriptBuilders
                     case 'time':
                     case 'datetime':
                         $filter['operators'] = [
-                            'equal', 'not_equal', 'is_null', 'is_not_null', 'in', 'not_in',
+                            'equal', 'not_equal', 'is_null', 'is_not_null',
                             'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', // specific to numbers and dates
                         ];
                         break;
