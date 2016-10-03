@@ -114,7 +114,7 @@ qbjs_parser:
     {
         public function reportBuilderAction(Request $request)
         {
-             $builders = $this->get('qbjs_parser.builders')->getParserQueries();
+             $builders = $this->get('qbjs_parser.builders')->getBuilders();
                      
              return $this->render('default/index.html.twig', [
                  'builders' => $builders,
