@@ -7,18 +7,23 @@ class Builder
     /**
      * @var string
      */
-    private $className;
+    private $className = '';
 
     /**
      * @var string
      * Containing multiple filters that can be used to instantiate a Jquery QueryBuilder
      */
-    private $jsonString;
+    private $jsonString = '';
 
     /**
      * @var string
      */
-    private $humanReadableName;
+    private $humanReadableName = '';
+
+    /**
+     * @var string
+     */
+    private $builderId = '';
 
     /**
      * @return string
@@ -73,6 +78,25 @@ class Builder
     public function setHumanReadableName(string $humanReadableName): Builder
     {
         $this->humanReadableName = $humanReadableName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBuilderId(): string
+    {
+        return $this->builderId;
+    }
+
+    /**
+     * @param string $builderId
+     * @return Builder
+     */
+    public function setBuilderId(string $builderId): Builder
+    {
+        $this->builderId = $builderId;
 
         return $this;
     }

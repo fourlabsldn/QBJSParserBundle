@@ -15,6 +15,7 @@ class JavascriptBuilders
 {
     /**
      * @var Builder[]
+     * Keys should equal @see Builder::$builderId
      */
     private $builders;
 
@@ -34,20 +35,21 @@ class JavascriptBuilders
         $this->dispatcher = $dispatcher; // important that this goes before it's being used later in the constructor
         $this->validate($buildersConfig, $classesAndMappings);
         foreach ($buildersConfig as $builderId => $config) {
-            $config['id'] = $builderId; // necessary for jQuery Query Builder
+            $config['id'] = strval($builderId); // necessary for jQuery Query Builder
             $config['filters'] = $this->filtersDefaultOperators($config['filters']);
             $config['filters'] = $this->filtersOverrides($config['filters'], $builderId);
             $config['filters'] = $this->filtersBooleanOverride($config['filters']); // override all booleans to display the same!
             $config['filters'] = $this->filtersDateOverrides($config['filters']); // override all dates to display the same!
             $builder = new Builder();
             $builder
+                ->setBuilderId($builderId)
                 ->setClassName($config['class'])
                 ->setHumanReadableName($config['human_readable_name'])
             ;
             unset($config['class']);
             unset($config['human_readable_name']);
             $builder->setJsonString(json_encode($config));
-            $this->builders[] = $builder;
+            $this->builders[$builderId] = $builder;
         }
         $this->dispatcher = $dispatcher;
     }
@@ -333,5 +335,17 @@ class JavascriptBuilders
     public function getBuilders()
     {
         return $this->builders;
+    }
+
+    /**
+     * @param string $builderId
+     * @return Builder|null
+     */
+    public function getBuilderById(string $builderId)
+    {
+        if (array_key_exists($builderId, $this->builders)) {
+            return $this->builders[$builderId];
+        }
+        return null;
     }
 }
