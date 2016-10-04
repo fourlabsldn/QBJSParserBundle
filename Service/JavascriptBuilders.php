@@ -2,9 +2,7 @@
 
 namespace FL\QBJSParserBundle\Service;
 
-use FL\QBJSParserBundle\Event\Filter\InputSetEvent;
-use FL\QBJSParserBundle\Event\Filter\OperatorsSetEvent;
-use FL\QBJSParserBundle\Event\Filter\ValuesSetEvent;
+use FL\QBJSParserBundle\Event\Filter\FilterSetEvent;
 use FL\QBJSParserBundle\Model\Builder;
 use FL\QBJSParserBundle\Model\Filter\FilterInput;
 use FL\QBJSParserBundle\Model\Filter\FilterOperators;
@@ -236,9 +234,13 @@ class JavascriptBuilders
     {
         foreach ($filters as $key => $filter) {
             $filterId = $filter['id'];
-            $filterValueCollection = $this->filterOverrideValues($filterId, $builderId);
-            $filterInput = $this->filterOverrideInput($filterId, $builderId);
-            $filterOperators = $this->filterOverrideOperators($filterId, $builderId, $filter['operators']);
+            $filterValueCollection = new FilterValueCollection();
+            $filterInput = new FilterInput(FilterInput::INPUT_TYPE_TEXT);
+            $filterOperators = new FilterOperators();
+            foreach($filter['operators'] as $operator){
+                $filterOperators->addOperator($operator);
+            }
+            $this->dispatcher->dispatch(FilterSetEvent::EVENT_NAME, new FilterSetEvent($filterInput, $filterOperators, $filterValueCollection, $filterId, $builderId));
             $this->validateValueCollectionAgainstInput($filterValueCollection, $filterInput, $filterId, $builderId);
 
             $valuesArray =[];
@@ -251,49 +253,6 @@ class JavascriptBuilders
         }
 
         return $filters;
-    }
-
-    /**
-     * @param string $filterId
-     * @param string $builderId
-     * @return FilterValueCollection
-     */
-    private function filterOverrideValues(string $filterId, string $builderId): FilterValueCollection
-    {
-        $filterValueCollection = new FilterValueCollection();
-        $this->dispatcher->dispatch(ValuesSetEvent::EVENT_NAME, new ValuesSetEvent($filterValueCollection, $filterId, $builderId));
-
-        return $filterValueCollection;
-    }
-
-    /**
-     * @param string $filterId
-     * @param string $builderId
-     * @return FilterInput
-     */
-    private function filterOverrideInput(string $filterId, string $builderId): FilterInput
-    {
-        $filterInput = new FilterInput(FilterInput::INPUT_TYPE_TEXT);
-        $this->dispatcher->dispatch(InputSetEvent::EVENT_NAME, new InputSetEvent($filterInput, $filterId, $builderId));
-
-        return $filterInput;
-    }
-
-    /**
-     * @param string $filterId
-     * @param string $builderId
-     * @param string[] $filterOperatorsArray
-     * @return FilterOperators
-     */
-    private function filterOverrideOperators(string $filterId, string $builderId, array $filterOperatorsArray): FilterOperators
-    {
-        $filterOperators = new FilterOperators();
-        foreach($filterOperatorsArray as $key => $operator){
-            $filterOperators->addOperator($operator);
-        }
-        $this->dispatcher->dispatch(OperatorsSetEvent::EVENT_NAME, new OperatorsSetEvent($filterOperators, $filterId, $builderId));
-
-        return $filterOperators;
     }
 
     /**

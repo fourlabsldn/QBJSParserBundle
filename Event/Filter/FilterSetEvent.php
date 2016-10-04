@@ -2,12 +2,24 @@
 
 namespace FL\QBJSParserBundle\Event\Filter;
 
+use FL\QBJSParserBundle\Model\Filter\FilterInput;
+use FL\QBJSParserBundle\Model\Filter\FilterOperators;
 use FL\QBJSParserBundle\Model\Filter\FilterValueCollection;
 use Symfony\Component\EventDispatcher\Event;
 
-class ValuesSetEvent extends Event
+class FilterSetEvent extends Event
 {
-    const EVENT_NAME = 'qbjs_parser.filter_values_set';
+    const EVENT_NAME = 'qbjs_parser.filter_set_event';
+
+    /**
+     * @var FilterInput
+     */
+    protected $filterInput;
+
+    /**
+     * @var FilterOperators
+     */
+    protected $filterOperators;
 
     /**
      * @var FilterValueCollection
@@ -25,15 +37,35 @@ class ValuesSetEvent extends Event
     protected $builderId;
 
     /**
+     * @param FilterInput $filterInput
+     * @param FilterOperators $filterOperators
      * @param FilterValueCollection $filterValueCollection
      * @param string $filterId
      * @param string $builderId
      */
-    public function __construct(FilterValueCollection $filterValueCollection, string $filterId, string $builderId)
+    public function __construct(FilterInput $filterInput, FilterOperators $filterOperators, FilterValueCollection $filterValueCollection, string $filterId, string $builderId)
     {
+        $this->filterInput = $filterInput;
+        $this->filterOperators = $filterOperators;
         $this->filterValueCollection = $filterValueCollection;
         $this->filterId = $filterId;
         $this->builderId = $builderId;
+    }
+
+    /**
+     * @return FilterInput
+     */
+    public function getFilterInput(): FilterInput
+    {
+        return $this->filterInput;
+    }
+
+    /**
+     * @return FilterOperators
+     */
+    public function getFilterOperators(): FilterOperators
+    {
+        return $this->filterOperators;
     }
 
     /**
