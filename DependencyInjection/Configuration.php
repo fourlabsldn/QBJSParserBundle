@@ -32,7 +32,7 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                 ->end()
                             ->end()
-                            ->arrayNode('result_columns')
+                            ->arrayNode('result_columns')->isRequired()->cannotBeEmpty()
                                 ->prototype('array')->cannotBeEmpty()
                                     ->children()
                                         ->scalarNode('column_machine_name')->isRequired()->cannotBeEmpty()->end()
