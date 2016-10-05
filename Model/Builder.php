@@ -26,6 +26,16 @@ class Builder
     private $builderId = '';
 
     /**
+     * @var \SplObjectStorage
+     */
+    private $resultColumns;
+
+    public function __construct()
+    {
+        $this->resultColumns = new \SplObjectStorage();
+    }
+
+    /**
      * @return string
      */
     public function getClassName(): string
@@ -39,6 +49,12 @@ class Builder
      */
     public function setClassName(string $className): Builder
     {
+        if (! class_exists($className)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Class %s does not exist',
+                $className
+            ));
+        }
         $this->className = $className;
 
         return $this;
@@ -97,6 +113,47 @@ class Builder
     public function setBuilderId(string $builderId): Builder
     {
         $this->builderId = $builderId;
+
+        return $this;
+    }
+
+    /**
+     * @return \SplObjectStorage
+     */
+    public function getResultColumns() : \SplObjectStorage
+    {
+        return $this->resultColumns;
+    }
+
+    /**
+     * @param ResultColumn $resultColumn
+     * @return Builder
+     */
+    public function addResultColumn(ResultColumn $resultColumn) : Builder
+    {
+        // prevent columns with the same machine_name or human_readable_name to be added
+        foreach($this->resultColumns as $column){
+            /** @var ResultColumn $column */
+            if(
+                $column->getHumanReadableName() === $resultColumn->getHumanReadableName() ||
+                $column->getMachineName() === $resultColumn->getMachineName()
+            ) {
+                return $this;
+            }
+
+        }
+        $this->resultColumns->attach($resultColumn);
+
+        return $this;
+    }
+
+    /**
+     * @param ResultColumn $resultColumn
+     * @return Builder
+     */
+    public function removeResultColumn(ResultColumn $resultColumn) : Builder
+    {
+        $this->resultColumns->detach($resultColumn);
 
         return $this;
     }

@@ -7,6 +7,7 @@ use FL\QBJSParserBundle\Model\Builder;
 use FL\QBJSParserBundle\Model\Filter\FilterInput;
 use FL\QBJSParserBundle\Model\Filter\FilterOperators;
 use FL\QBJSParserBundle\Model\Filter\FilterValueCollection;
+use FL\QBJSParserBundle\Model\ResultColumn;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class JavascriptBuilders
@@ -47,6 +48,11 @@ class JavascriptBuilders
             unset($config['class']);
             unset($config['human_readable_name']);
             $builder->setJsonString(json_encode($config));
+
+            foreach($config['result_columns'] as $column){
+                $builder->addResultColumn(new ResultColumn($column['column_human_readable_name'], $column['column_machine_name']));
+            }
+
             $this->builders[$builderId] = $builder;
         }
         $this->dispatcher = $dispatcher;
