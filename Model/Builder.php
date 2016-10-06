@@ -157,4 +157,19 @@ class Builder
 
         return $this;
     }
+
+    /**
+     * @param string $machineName
+     * @return string|null
+     */
+    public function getHumanReadableWithMachineName(string $machineName)
+    {
+        /** @var ResultColumn $column */
+        foreach ($this->resultColumns as $column) {
+            if ($column->getMachineName() === $machineName) {
+                return $column->getHumanReadableName();
+            }
+        }
+        return null;
+    }
 }
