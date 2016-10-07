@@ -127,7 +127,7 @@ class JavascriptBuilders
         $propertyInfo = new PropertyInfoExtractor([new ReflectionExtractor()]);
         $properties = $propertyInfo->getProperties($className);
 
-        if (strpos($classProperty, '.') !== false) { // not yet checking associations - Property Accessor can't do this
+        if (strpos($classProperty, '.') === false) { // not yet checking associations - Property Accessor can't do this
             if (!in_array($classProperty, $properties)) {
                 throw new \InvalidArgumentException(
                     sprintf(
