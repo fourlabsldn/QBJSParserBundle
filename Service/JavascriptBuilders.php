@@ -127,13 +127,17 @@ class JavascriptBuilders
         $propertyInfo = new PropertyInfoExtractor([new ReflectionExtractor()]);
         $properties = $propertyInfo->getProperties($className);
 
-        if (!in_array($classProperty, $properties)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Builder %s Bad Column Declared. Property %s is not accessible in %s.',
-                $builderId,
-                $classProperty,
-                $className
-            ));
+        if (strpos($classProperty, '.') !== false) { // not yet checking associations - Property Accessor can't do this
+            if (!in_array($classProperty, $properties)) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Builder %s Bad Column Declared. Property %s is not accessible in %s.',
+                        $builderId,
+                        $classProperty,
+                        $className
+                    )
+                );
+            }
         }
     }
 
