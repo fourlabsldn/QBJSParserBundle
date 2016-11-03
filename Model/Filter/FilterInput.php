@@ -12,7 +12,7 @@ class FilterInput
 
     const VALID_INPUT_TYPES = [
         self::INPUT_TYPE_TEXT, self::INPUT_TYPE_TEXTAREA, self:: INPUT_TYPE_RADIO,
-        self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_SELECT
+        self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_SELECT,
     ];
 
     const INPUT_TYPES_REQUIRE_NO_VALUES = [
@@ -20,7 +20,7 @@ class FilterInput
     ];
 
     const INPUT_TYPES_REQUIRE_MULTIPLE_VALUES = [
-        self:: INPUT_TYPE_RADIO, self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_SELECT
+        self:: INPUT_TYPE_RADIO, self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_SELECT,
     ];
 
     /**
@@ -30,6 +30,7 @@ class FilterInput
 
     /**
      * @param string $inputType
+     *
      * @throws \InvalidArgumentException
      */
     public function __construct(string $inputType)
@@ -48,6 +49,7 @@ class FilterInput
 
     /**
      * @param string $inputType
+     *
      * @return FilterInput
      */
     public function setInputType(string $inputType): FilterInput
@@ -63,7 +65,7 @@ class FilterInput
      */
     private function validate()
     {
-        if (! in_array($this->inputType, self::VALID_INPUT_TYPES)){
+        if (!in_array($this->inputType, self::VALID_INPUT_TYPES)) {
             throw new \InvalidArgumentException(sprintf(
                 '%s is not a valid input type'
             ), $this->inputType);

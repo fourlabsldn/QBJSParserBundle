@@ -15,7 +15,7 @@ use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 class JavascriptBuilders
 {
     /**
-     * Keys should equal @see Builder::$builderId
+     * Keys should equal @see Builder::$builderId.
      *
      * @var Builder[]
      */
@@ -28,8 +28,9 @@ class JavascriptBuilders
 
     /**
      * ParserQueryService constructor.
-     * @param array $buildersConfig
-     * @param array $classesAndMappings
+     *
+     * @param array                    $buildersConfig
+     * @param array                    $classesAndMappings
      * @param EventDispatcherInterface $dispatcher
      */
     public function __construct(array $buildersConfig, array $classesAndMappings, EventDispatcherInterface $dispatcher)
@@ -52,7 +53,7 @@ class JavascriptBuilders
             unset($config['human_readable_name']);
             $builder->setJsonString(json_encode($config));
 
-            foreach($config['result_columns'] as $column){
+            foreach ($config['result_columns'] as $column) {
                 $builder->addResultColumn(new ResultColumn($column['column_human_readable_name'], $column['column_machine_name']));
             }
 
@@ -68,7 +69,7 @@ class JavascriptBuilders
     private function validate(array $buildersConfig, array $classesAndMappings)
     {
         foreach ($buildersConfig as $builderId => $config) {
-            if (! array_key_exists('class', $config)) {
+            if (!array_key_exists('class', $config)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Builders Configuration: Expected a class in builder with ID %s',
                     $builderId
@@ -76,7 +77,7 @@ class JavascriptBuilders
             }
             $builderClass = $config['class'];
 
-            if (! class_exists($builderClass)) {
+            if (!class_exists($builderClass)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Builders Configuration: %s is not a valid class in builder with ID %s ',
                     $builderClass,
@@ -84,7 +85,7 @@ class JavascriptBuilders
                 ));
             }
 
-            foreach($config['result_columns'] as $column){
+            foreach ($config['result_columns'] as $column) {
                 $this->validateClassHasProperty($builderClass, $column['column_machine_name'], $builderId);
             }
 
@@ -96,7 +97,7 @@ class JavascriptBuilders
                     $mappingClassFoundForBuilderClass = true;
 
                     foreach ($config['filters'] as $filter) {
-                        if (! array_key_exists($filter['id'], $mappingProperties)) {
+                        if (!array_key_exists($filter['id'], $mappingProperties)) {
                             throw new \InvalidArgumentException(sprintf(
                                 'Builders Configuration: Invalid Mapping for filter with ID %s, in builder with ID %s ',
                                 $filter['id'],
@@ -120,7 +121,9 @@ class JavascriptBuilders
      * @param string $className
      * @param string $classProperty
      * @param string $builderId
+     *
      * @link http://symfony.com/doc/current/components/property_info.html#components-property-info-extractors
+     *
      * @throws \InvalidArgumentException
      */
     final private function validateClassHasProperty(string $className, string $classProperty, string $builderId)
@@ -144,6 +147,7 @@ class JavascriptBuilders
 
     /**
      * @param array $filters
+     *
      * @return array
      */
     private function filtersDefaultOperators(array $filters) : array
@@ -151,7 +155,7 @@ class JavascriptBuilders
         foreach ($filters as $key => $filter) {
             // give the filter default operators, according to its type
             if (
-                (! array_key_exists('operators', $filter)) ||
+                (!array_key_exists('operators', $filter)) ||
                 (empty($filter['operators']))
             ) {
                 $builderType = $filter['type'];
@@ -175,7 +179,7 @@ class JavascriptBuilders
                         break;
                     case 'boolean':
                         $filter['operators'] = [
-                            'equal', 'not_equal', 'is_null', 'is_not_null'
+                            'equal', 'not_equal', 'is_null', 'is_not_null',
                         ];
                         break;
                 }
@@ -188,6 +192,7 @@ class JavascriptBuilders
 
     /**
      * @param array $filters
+     *
      * @return array
      */
     private function filtersBooleanOverride(array $filters) : array
@@ -217,9 +222,10 @@ class JavascriptBuilders
 
     /**
      * Use with @link https://eonasdan.github.io/bootstrap-datetimepicker/
-     * Also make sure to account for @link https://github.com/mistic100/jQuery-QueryBuilder/issues/176
+     * Also make sure to account for @link https://github.com/mistic100/jQuery-QueryBuilder/issues/176.
      *
      * @param array $filters
+     *
      * @return array
      */
     private function filtersDateOverrides(array $filters) : array
@@ -230,7 +236,7 @@ class JavascriptBuilders
             switch ($builderType) {
                 case 'date':
                     $filter['validation'] = [
-                        'format' => 'YYYY/MM/DD'
+                        'format' => 'YYYY/MM/DD',
                     ];
                     $filter['plugin'] = 'datetimepicker';
                     $filter['plugin_config'] = [
@@ -239,7 +245,7 @@ class JavascriptBuilders
                     break;
                 case 'datetime':
                     $filter['validation'] = [
-                        'format' => 'YYYY/MM/DD HH:mm'
+                        'format' => 'YYYY/MM/DD HH:mm',
                     ];
                     $filter['plugin'] = 'datetimepicker';
                     $filter['plugin_config'] = [
@@ -248,7 +254,7 @@ class JavascriptBuilders
                     break;
                 case 'time':
                     $filter['validation'] = [
-                        'format' => 'HH:mm'
+                        'format' => 'HH:mm',
                     ];
                     $filter['plugin'] = 'datetimepicker';
                     $filter['plugin_config'] = [
@@ -264,9 +270,11 @@ class JavascriptBuilders
     }
 
     /**
-     * @param array $filters
+     * @param array  $filters
      * @param string $builderId
+     *
      * @return array
+     *
      * @throws \LogicException
      */
     private function filtersOverrides(array $filters, string $builderId) : array
@@ -276,14 +284,14 @@ class JavascriptBuilders
             $filterValueCollection = new FilterValueCollection();
             $filterInput = new FilterInput(FilterInput::INPUT_TYPE_TEXT);
             $filterOperators = new FilterOperators();
-            foreach($filter['operators'] as $operator){
+            foreach ($filter['operators'] as $operator) {
                 $filterOperators->addOperator($operator);
             }
             $this->dispatcher->dispatch(FilterSetEvent::EVENT_NAME, new FilterSetEvent($filterInput, $filterOperators, $filterValueCollection, $filterId, $builderId));
             $this->validateValueCollectionAgainstInput($filterValueCollection, $filterInput, $filterId, $builderId);
 
-            $valuesArray =[];
-            foreach($filterValueCollection->getFilterValues() as $filterValue){
+            $valuesArray = [];
+            foreach ($filterValueCollection->getFilterValues() as $filterValue) {
                 $valuesArray[$filterValue->getValue()] = $filterValue->getLabel();
             }
             $filters[$key]['values'] = $valuesArray;
@@ -296,9 +304,10 @@ class JavascriptBuilders
 
     /**
      * @param FilterValueCollection $collection
-     * @param FilterInput $input
-     * @param string $filterId
-     * @param string $builderId
+     * @param FilterInput           $input
+     * @param string                $filterId
+     * @param string                $builderId
+     *
      * @throws \LogicException
      */
     private function validateValueCollectionAgainstInput(FilterValueCollection $collection, FilterInput $input, string $filterId, string $builderId)
@@ -312,7 +321,6 @@ class JavascriptBuilders
                 $builderId,
                 $filterId
             ));
-
         }
         if (
             in_array($input->getInputType(), FilterInput::INPUT_TYPES_REQUIRE_MULTIPLE_VALUES) &&
@@ -323,7 +331,6 @@ class JavascriptBuilders
                 $builderId,
                 $filterId
             ));
-
         }
     }
 
@@ -337,6 +344,7 @@ class JavascriptBuilders
 
     /**
      * @param string $builderId
+     *
      * @return Builder|null
      */
     public function getBuilderById(string $builderId)
@@ -344,6 +352,7 @@ class JavascriptBuilders
         if (array_key_exists($builderId, $this->builders)) {
             return $this->builders[$builderId];
         }
-        return null;
+
+        return;
     }
 }

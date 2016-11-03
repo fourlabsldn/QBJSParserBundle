@@ -37,11 +37,11 @@ class FilterSetEvent extends Event
     protected $builderId;
 
     /**
-     * @param FilterInput $filterInput
-     * @param FilterOperators $filterOperators
+     * @param FilterInput           $filterInput
+     * @param FilterOperators       $filterOperators
      * @param FilterValueCollection $filterValueCollection
-     * @param string $filterId
-     * @param string $builderId
+     * @param string                $filterId
+     * @param string                $builderId
      */
     public function __construct(FilterInput $filterInput, FilterOperators $filterOperators, FilterValueCollection $filterValueCollection, string $filterId, string $builderId)
     {
@@ -91,5 +91,4 @@ class FilterSetEvent extends Event
     {
         return $this->builderId;
     }
-
 }

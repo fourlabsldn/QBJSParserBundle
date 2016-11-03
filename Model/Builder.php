@@ -10,7 +10,7 @@ class Builder
     private $className = '';
 
     /**
-     * Containing multiple filters that can be used to instantiate a Jquery QueryBuilder
+     * Containing multiple filters that can be used to instantiate a Jquery QueryBuilder.
      *
      * @var string
      */
@@ -46,11 +46,12 @@ class Builder
 
     /**
      * @param string $className
+     *
      * @return Builder
      */
     public function setClassName(string $className): Builder
     {
-        if (! class_exists($className)) {
+        if (!class_exists($className)) {
             throw new \InvalidArgumentException(sprintf(
                 'Class %s does not exist',
                 $className
@@ -71,6 +72,7 @@ class Builder
 
     /**
      * @param string $jsonString
+     *
      * @return Builder
      */
     public function setJsonString(string $jsonString): Builder
@@ -90,6 +92,7 @@ class Builder
 
     /**
      * @param string $humanReadableName
+     *
      * @return Builder
      */
     public function setHumanReadableName(string $humanReadableName): Builder
@@ -109,6 +112,7 @@ class Builder
 
     /**
      * @param string $builderId
+     *
      * @return Builder
      */
     public function setBuilderId(string $builderId): Builder
@@ -128,20 +132,20 @@ class Builder
 
     /**
      * @param ResultColumn $resultColumn
+     *
      * @return Builder
      */
     public function addResultColumn(ResultColumn $resultColumn) : Builder
     {
         // prevent columns with the same machine_name or human_readable_name to be added
-        foreach($this->resultColumns as $column){
+        foreach ($this->resultColumns as $column) {
             /** @var ResultColumn $column */
-            if(
+            if (
                 $column->getHumanReadableName() === $resultColumn->getHumanReadableName() ||
                 $column->getMachineName() === $resultColumn->getMachineName()
             ) {
                 return $this;
             }
-
         }
         $this->resultColumns->attach($resultColumn);
 
@@ -150,6 +154,7 @@ class Builder
 
     /**
      * @param ResultColumn $resultColumn
+     *
      * @return Builder
      */
     public function removeResultColumn(ResultColumn $resultColumn) : Builder
@@ -161,6 +166,7 @@ class Builder
 
     /**
      * @param string $machineName
+     *
      * @return string|null
      */
     public function getHumanReadableWithMachineName(string $machineName)
@@ -171,6 +177,7 @@ class Builder
                 return $column->getHumanReadableName();
             }
         }
-        return null;
+
+        return;
     }
 }
