@@ -15,8 +15,9 @@ use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 class JavascriptBuilders
 {
     /**
-     * @var Builder[]
      * Keys should equal @see Builder::$builderId
+     *
+     * @var Builder[]
      */
     private $builders;
 
