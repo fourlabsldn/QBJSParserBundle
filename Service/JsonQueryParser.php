@@ -9,16 +9,18 @@ use FL\QBJSParser\Serializer\JsonDeserializer;
 class JsonQueryParser
 {
     /**
-     * @var array
      * Class Name is the $className argument used when constructing @see DoctrineParser
      * PropertiesMapping is the $queryBuilderFieldsToEntityProperties when constructing @see DoctrineParser
+     *
+     * @var array
      */
     private $classNameToPropertiesMapping = [];
 
     /**
-     * @var array
      * Class Name is the $className argument used when constructing @see DoctrineParser
      * AssociationMapping is the $queryBuilderFieldPrefixesToAssociationClasses when constructing @see DoctrineParser
+     *
+     * @var array
      */
     private $classNameToAssociationMapping = [];
 

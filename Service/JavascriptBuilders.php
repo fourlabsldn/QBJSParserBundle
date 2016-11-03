@@ -266,7 +266,7 @@ class JavascriptBuilders
      * @param array $filters
      * @param string $builderId
      * @return array
-     *  @throws \LogicException
+     * @throws \LogicException
      */
     private function filtersOverrides(array $filters, string $builderId) : array
     {

@@ -10,8 +10,9 @@ class Builder
     private $className = '';
 
     /**
-     * @var string
      * Containing multiple filters that can be used to instantiate a Jquery QueryBuilder
+     *
+     * @var string
      */
     private $jsonString = '';
 
