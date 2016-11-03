@@ -1,5 +1,7 @@
 #QBJSParserBundle
 
+[![StyleCI](https://styleci.io/repos/68914794/shield?branch=master)](https://styleci.io/repos/68914794)
+
 This bundle is a symfony wrapper for the QBJSParser library. It has two useful services:
 
 - `qbjs_parser.json_query_parser` based on class `FL\QBJSParserBundle\Service\JsonQueryParser`
