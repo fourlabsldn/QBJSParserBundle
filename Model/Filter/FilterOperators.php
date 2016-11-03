@@ -8,7 +8,7 @@ class FilterOperators
         'equal', 'not_equal', 'is_null', 'is_not_null',
         'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between',
         'begins_with', 'not_begins_with', 'contains', 'not_contains', 'ends_with', 'not_ends_with', 'is_empty', 'is_not_empty',
-        'in', 'not_in'
+        'in', 'not_in',
     ];
 
     /**
@@ -24,10 +24,11 @@ class FilterOperators
         return $this->operators;
     }
 
-
     /**
      * @param string[] $operators
+     *
      * @return FilterOperators
+     *
      * @throws \InvalidArgumentException
      */
     public function setOperators(array $operators): FilterOperators
@@ -42,13 +43,15 @@ class FilterOperators
 
     /**
      * @param string $operator
+     *
      * @return FilterOperators
+     *
      * @throws \InvalidArgumentException
      */
     public function addOperator(string $operator): FilterOperators
     {
         $this->validateOperator($operator);
-        if (! in_array($operator, $this->operators)) {
+        if (!in_array($operator, $this->operators)) {
             $this->operators[] = $operator;
         }
 
@@ -57,13 +60,15 @@ class FilterOperators
 
     /**
      * @param string $operator
+     *
      * @return FilterOperators
+     *
      * @throws \InvalidArgumentException
      */
     public function removeOperator(string $operator): FilterOperators
     {
         $this->validateOperator($operator);
-        if(($key = array_search($operator, $this->operators)) !== false) {
+        if (($key = array_search($operator, $this->operators)) !== false) {
             unset($this->operators[$key]);
         }
 
@@ -82,11 +87,12 @@ class FilterOperators
 
     /**
      * @param string
+     *
      * @throws \InvalidArgumentException
      */
     private function validateOperator(string $operator)
     {
-        if (! in_array($operator, self::VALID_OPERATORS)){
+        if (!in_array($operator, self::VALID_OPERATORS)) {
             throw new \InvalidArgumentException(sprintf(
                 '%s is not a valid operator'
             ), $operator);

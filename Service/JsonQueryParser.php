@@ -10,7 +10,7 @@ class JsonQueryParser
 {
     /**
      * Class Name is the $className argument used when constructing @see DoctrineParser
-     * PropertiesMapping is the $queryBuilderFieldsToEntityProperties when constructing @see DoctrineParser
+     * PropertiesMapping is the $queryBuilderFieldsToEntityProperties when constructing @see DoctrineParser.
      *
      * @var array
      */
@@ -18,7 +18,7 @@ class JsonQueryParser
 
     /**
      * Class Name is the $className argument used when constructing @see DoctrineParser
-     * AssociationMapping is the $queryBuilderFieldPrefixesToAssociationClasses when constructing @see DoctrineParser
+     * AssociationMapping is the $queryBuilderFieldPrefixesToAssociationClasses when constructing @see DoctrineParser.
      *
      * @var array
      */
@@ -35,7 +35,7 @@ class JsonQueryParser
     private $jsonDeserializer;
 
     /**
-     * @param array $classesAndMappings
+     * @param array            $classesAndMappings
      * @param JsonDeserializer $jsonDeserializer
      */
     public function __construct(array $classesAndMappings, JsonDeserializer $jsonDeserializer)
@@ -62,18 +62,21 @@ class JsonQueryParser
     /**
      * @param string $jsonString
      * @param string $entityClassName
+     *
      * @return ParsedRuleGroup
      */
     public function parseJsonString(string $jsonString, string $entityClassName) : ParsedRuleGroup
     {
         $doctrineParser = $this->newParser($entityClassName);
+
         return $doctrineParser->parse($this->jsonDeserializer->deserialize($jsonString));
     }
 
-
     /**
      * @param string $className
+     *
      * @return DoctrineParser
+     *
      * @throws \DomainException
      */
     private function newParser(string $className)
@@ -84,6 +87,7 @@ class JsonQueryParser
                 $className
             ));
         }
+
         return $this->classNameToDoctrineParser[$className];
     }
 }

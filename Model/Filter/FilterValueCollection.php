@@ -24,9 +24,9 @@ class FilterValueCollection
         return $this;
     }
 
-
     /**
      * @param FilterValue $filterValue
+     *
      * @return FilterValueCollection
      */
     public function addFilterValue(FilterValue $filterValue)
@@ -38,6 +38,7 @@ class FilterValueCollection
 
     /**
      * @param FilterValue $filterValue
+     *
      * @return FilterValueCollection
      */
     public function removeFilterValue(FilterValue $filterValue)
