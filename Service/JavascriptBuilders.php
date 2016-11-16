@@ -8,9 +8,8 @@ use FL\QBJSParserBundle\Model\Filter\FilterInput;
 use FL\QBJSParserBundle\Model\Filter\FilterOperators;
 use FL\QBJSParserBundle\Model\Filter\FilterValueCollection;
 use FL\QBJSParserBundle\Model\ResultColumn;
+use FL\QBJSParserBundle\Util\Validator\BuildersToMappings;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
-use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 
 class JavascriptBuilders
 {
@@ -36,7 +35,7 @@ class JavascriptBuilders
     public function __construct(array $buildersConfig, array $classesAndMappings, EventDispatcherInterface $dispatcher)
     {
         $this->dispatcher = $dispatcher; // important that this goes before it's being used later in the constructor
-        $this->validate($buildersConfig, $classesAndMappings);
+        BuildersToMappings::validate($buildersConfig, $classesAndMappings);
         foreach ($buildersConfig as $builderId => $config) {
             $config['id'] = strval($builderId); // necessary for jQuery Query Builder
             $config['filters'] = $this->filtersDefaultOperators($config['filters']);
@@ -60,89 +59,6 @@ class JavascriptBuilders
             $this->builders[$builderId] = $builder;
         }
         $this->dispatcher = $dispatcher;
-    }
-
-    /**
-     * @param array $buildersConfig
-     * @param array $classesAndMappings
-     */
-    private function validate(array $buildersConfig, array $classesAndMappings)
-    {
-        foreach ($buildersConfig as $builderId => $config) {
-            if (!array_key_exists('class', $config)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Builders Configuration: Expected a class in builder with ID %s',
-                    $builderId
-                ));
-            }
-            $builderClass = $config['class'];
-
-            if (!class_exists($builderClass)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Builders Configuration: %s is not a valid class in builder with ID %s ',
-                    $builderClass,
-                    $builderId
-                ));
-            }
-
-            foreach ($config['result_columns'] as $column) {
-                $this->validateClassHasProperty($builderClass, $column['column_machine_name'], $builderId);
-            }
-
-            $mappingClassFoundForBuilderClass = false;
-            foreach ($classesAndMappings as $classAndMapping) {
-                $mappingClass = $classAndMapping['class'];
-                $mappingProperties = $classAndMapping['properties'];
-                if ($builderClass === $mappingClass) {
-                    $mappingClassFoundForBuilderClass = true;
-
-                    foreach ($config['filters'] as $filter) {
-                        if (!array_key_exists($filter['id'], $mappingProperties)) {
-                            throw new \InvalidArgumentException(sprintf(
-                                'Builders Configuration: Invalid Mapping for filter with ID %s, in builder with ID %s ',
-                                $filter['id'],
-                                $builderId
-                            ));
-                        }
-                    }
-                }
-            }
-
-            if (!$mappingClassFoundForBuilderClass) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Builder with class %s, but no corresponding mapping for this class',
-                    $builderClass
-                ));
-            }
-        }
-    }
-
-    /**
-     * @param string $className
-     * @param string $classProperty
-     * @param string $builderId
-     *
-     * @link http://symfony.com/doc/current/components/property_info.html#components-property-info-extractors
-     *
-     * @throws \InvalidArgumentException
-     */
-    final private function validateClassHasProperty(string $className, string $classProperty, string $builderId)
-    {
-        $propertyInfo = new PropertyInfoExtractor([new ReflectionExtractor()]);
-        $properties = $propertyInfo->getProperties($className);
-
-        if (strpos($classProperty, '.') === false) { // not yet checking associations - Property Accessor can't do this
-            if (!in_array($classProperty, $properties)) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Builder %s Bad Column Declared. Property %s is not accessible in %s.',
-                        $builderId,
-                        $classProperty,
-                        $className
-                    )
-                );
-            }
-        }
     }
 
     /**

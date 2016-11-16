@@ -62,14 +62,15 @@ class JsonQueryParser
     /**
      * @param string $jsonString
      * @param string $entityClassName
+     * @param array|null $sortColumns
      *
      * @return ParsedRuleGroup
      */
-    public function parseJsonString(string $jsonString, string $entityClassName) : ParsedRuleGroup
+    public function parseJsonString(string $jsonString, string $entityClassName, array $sortColumns = null) : ParsedRuleGroup
     {
         $doctrineParser = $this->newParser($entityClassName);
 
-        return $doctrineParser->parse($this->jsonDeserializer->deserialize($jsonString));
+        return $doctrineParser->parse($this->jsonDeserializer->deserialize($jsonString), $sortColumns);
     }
 
     /**
