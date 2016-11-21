@@ -60,8 +60,8 @@ class JsonQueryParser
     }
 
     /**
-     * @param string $jsonString
-     * @param string $entityClassName
+     * @param string     $jsonString
+     * @param string     $entityClassName
      * @param array|null $sortColumns
      *
      * @return ParsedRuleGroup

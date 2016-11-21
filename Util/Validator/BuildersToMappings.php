@@ -7,7 +7,9 @@ use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 
 abstract class BuildersToMappings
 {
-    final private function __construct(){}
+    final private function __construct()
+    {
+    }
 
     /**
      * @param array $buildersConfig
@@ -53,7 +55,7 @@ abstract class BuildersToMappings
                         }
                     }
 
-                    foreach($config['result_columns'] as $column) {
+                    foreach ($config['result_columns'] as $column) {
                         if (!array_key_exists($column['column_machine_name'], $mappingProperties)) {
                             throw new \InvalidArgumentException(sprintf(
                                 'Builders Configuration: Result Column with machine name %s, in builder with ID %s, must exist in mapping for class %s ',
