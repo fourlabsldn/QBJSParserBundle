@@ -9,20 +9,44 @@ use FL\QBJSParser\Serializer\JsonDeserializer;
 class JsonQueryParser
 {
     /**
-     * Class Name is the $className argument used when constructing @see DoctrineParser
-     * PropertiesMapping is the $queryBuilderFieldsToEntityProperties when constructing @see DoctrineParser.
+     * Class is the $className argument used when constructing @see DoctrineParser
+     * PropertiesMapping is the $fieldsToProperties when constructing @see DoctrineParser.
      *
      * @var array
      */
-    private $classNameToPropertiesMapping = [];
+    private $classToPropertiesMapping = [];
 
     /**
-     * Class Name is the $className argument used when constructing @see DoctrineParser
-     * AssociationMapping is the $queryBuilderFieldPrefixesToAssociationClasses when constructing @see DoctrineParser.
+     * Class is the $className argument used when constructing @see DoctrineParser
+     * AssociationMapping is the $fieldPrefixesToClasses when constructing @see DoctrineParser.
      *
      * @var array
      */
-    private $classNameToAssociationMapping = [];
+    private $classToAssociationMapping = [];
+
+    /**
+     * Class is the $className argument used when constructing @see DoctrineParser
+     * EmbeddablesPropertiesMapping is the $embeddableFieldsToProperties when constructing @see DoctrineParser.
+     *
+     * @var array
+     */
+    private $classToEmbeddablesPropertiesMapping = [];
+
+    /**
+     * Class is the $className argument used when constructing @see DoctrineParser
+     * EmbeddablesAssociationMapping is the $embeddableFieldPrefixesToClasses when constructing @see DoctrineParser.
+     *
+     * @var array
+     */
+    private $classToEmbeddablesAssociationMapping = [];
+
+    /**
+     * Class is the $className argument used when constructing @see DoctrineParser
+     * EmbeddablesEmbeddableMapping is the $embeddableFieldPrefixesToEmbeddableClasses when constructing @see DoctrineParser.
+     *
+     * @var array
+     */
+    private $classToEmbeddablesEmbeddableMapping = [];
 
     /**
      * @var DoctrineParser[]
@@ -41,19 +65,31 @@ class JsonQueryParser
     public function __construct(array $classesAndMappings, JsonDeserializer $jsonDeserializer)
     {
         foreach ($classesAndMappings as $classAndMappings) {
-            foreach ($classAndMappings['properties'] as $queryBuilderField => $entityProperty) {
-                $this->classNameToPropertiesMapping[$classAndMappings['class']][$queryBuilderField] = $entityProperty ? $entityProperty : $queryBuilderField;
+            foreach ($classAndMappings['properties'] as $field => $entityProperty) {
+                $this->classToPropertiesMapping[$classAndMappings['class']][$field] = $entityProperty ? $entityProperty : $field;
             }
-            foreach ($classAndMappings['association_classes'] as $queryBuilderFieldPrefix => $associationClass) {
-                $this->classNameToAssociationMapping[$classAndMappings['class']][$queryBuilderFieldPrefix] = $associationClass;
+            foreach ($classAndMappings['association_classes'] as $prefix => $class) {
+                $this->classToAssociationMapping[$classAndMappings['class']][$prefix] = $class;
+            }
+            foreach ($classAndMappings['embeddables_properties'] as $field => $embeddableProperty) {
+                $this->classToEmbeddablesPropertiesMapping[$classAndMappings['class']][$field] = $embeddableProperty ? $embeddableProperty : $field;
+            }
+            foreach ($classAndMappings['embeddables_association_classes'] as $prefix => $class) {
+                $this->classToEmbeddablesAssociationMapping[$classAndMappings['class']][$prefix] = $class;
+            }
+            foreach ($classAndMappings['embeddables_embeddable_classes'] as $prefix => $class) {
+                $this->classToEmbeddablesEmbeddableMapping[$classAndMappings['class']][$prefix] = $class;
             }
         }
-        foreach ($this->classNameToPropertiesMapping as $className => $queryBuilderFieldsToEntityProperties) {
-            if (!array_key_exists($className, $this->classNameToAssociationMapping)) {
-                $this->classNameToDoctrineParser[$className] = new DoctrineParser($className, $queryBuilderFieldsToEntityProperties, []);
-            } else {
-                $this->classNameToDoctrineParser[$className] = new DoctrineParser($className, $queryBuilderFieldsToEntityProperties, $this->classNameToAssociationMapping[$className]);
-            }
+        foreach ($this->classToPropertiesMapping as $className => $fieldsToProperties) {
+            $this->classNameToDoctrineParser[$className] = new DoctrineParser(
+                $className,
+                $fieldsToProperties,
+                $this->classToAssociationMapping[$className] ?? [],
+                $this->classToEmbeddablesPropertiesMapping[$className] ?? [],
+                $this->classToEmbeddablesAssociationMapping[$className] ?? [],
+                $this->classToEmbeddablesEmbeddableMapping[$className] ?? []
+            );
         }
 
         $this->jsonDeserializer = $jsonDeserializer;
