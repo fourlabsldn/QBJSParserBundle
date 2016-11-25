@@ -41,7 +41,7 @@ abstract class BuildersToMappings
             $mappingClassFoundForBuilderClass = false;
             foreach ($classesAndMappings as $classAndMapping) {
                 $mappingClass = $classAndMapping['class'];
-                $mappingProperties = array_merge($classAndMapping['properties'], $classAndMapping['embeddables_properties']) ;
+                $mappingProperties = array_merge($classAndMapping['properties'], $classAndMapping['embeddables_properties']);
                 if ($builderClass === $mappingClass) {
                     $mappingClassFoundForBuilderClass = true;
 
