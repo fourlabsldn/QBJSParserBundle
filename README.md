@@ -37,6 +37,20 @@ qbjs_parser:
         product_report_builder:
             class: AppBundle\Entity\Product # this class must exist in doctrine_class_and_mappings
             human_readable_name: 'Product Report Builder'
+            # result_columns
+            # Not being used inside the bundle, but you can use them in your own way 
+            # Make sure not to use OnetoMany or ManyToMany properties here. That makes no sense!
+            # I.e. You can use direct properties of the class, ManyToOne, and OneToOne properties.
+            result_columns: 
+                -
+                    column_machine_name: id
+                    column_human_readable_name: ID
+                -
+                    column_machine_name: period.startDate
+                    column_human_readable_name: Interview Start
+                -
+                    column_machine_name: period.endDate
+                    column_human_readable_name: Interview End
             filters:
                 -
                     id: specification.description
@@ -51,6 +65,11 @@ qbjs_parser:
                     label: 'Product Price'
                     type: double
                     operators: [equal, not_equal, less, less_or_equal, greater, greater_or_equal, between, not_between, is_null, is_not_null]
+
+                -
+                    id: availability.startDate
+                    label: 'Product Availability - Start Date'
+                    type: datetime
     doctrine_classes_and_mappings: # these are used for service qbjs_parser.json_query_parser
         app_entity_product: # this key is for organizational purposes only
             class: AppBundle\Entity\Product # Class Name of a Doctrine Entity
@@ -60,18 +79,29 @@ qbjs_parser:
                 # They can also be associations and their properties
                 # Leave the value as null (~) to use the same value as the key
                 id: ~
-                priceValue: price
+                price: ~
                 labels.id: ~
                 labels.name: ~
                 labels.authors.id: ~
                 labels.authors.address.line1: ~
                 author.id: ~
-            association_classes: # required
+            association_classes:
                 # Indicate the class for each of the associations in properties
                 labels: AppBundle\Entity\Label
                 labels.authors: AppBundle\Entity\Author
                 labels.authors.address: AppBundle\Entity\Address
                 author: AppBundle\Entity\Author
+            # Now supporting embeddables!
+            embeddables_properties:
+                availability.startDate: ~
+                availability.endDate: ~
+                labels.availability.startDate: ~
+                labels.availability.endDate: ~
+            embeddables_association_classes:
+                labels: AppBundle\Entity\Label
+            embeddables_embeddable_classes:
+                availability: League\Period\Period
+                labels.availability: League\Period\Period
 ```
 
 ### Usage Example 
