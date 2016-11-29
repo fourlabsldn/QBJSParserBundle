@@ -32,24 +32,24 @@ class JsonQueryParser
         $classToEmbeddablesEmbeddableMapping = [];
 
         foreach ($classesAndMappings as $classAndMappings) {
-            $class = $classAndMappings['class'];
+            $className = $classAndMappings['class'];
             foreach ($classAndMappings['properties'] as $field => $entityProperty) {
-                $classToPropertiesMapping[$class][$field] = $entityProperty ? $entityProperty : $field;
+                $classToPropertiesMapping[$className][$field] = $entityProperty ? $entityProperty : $field;
             }
             foreach ($classAndMappings['association_classes'] as $prefix => $class) {
-                $classToAssociationMapping[$class][$prefix] = $class;
+                $classToAssociationMapping[$className][$prefix] = $class;
             }
             foreach ($classAndMappings['embeddables_properties'] as $field => $embeddableProperty) {
-                $classToEmbeddablesPropertiesMapping[$class][$field] = $embeddableProperty ? $embeddableProperty : $field;
+                $classToEmbeddablesPropertiesMapping[$className][$field] = $embeddableProperty ? $embeddableProperty : $field;
             }
             foreach ($classAndMappings['embeddables_inside_embeddables_properties'] as $field => $embeddableProperty) {
-                $classToEmbeddablesInsideEmbeddablesPropertiesMapping[$class][$field] = $embeddableProperty ? $embeddableProperty : $field;
+                $classToEmbeddablesInsideEmbeddablesPropertiesMapping[$className][$field] = $embeddableProperty ? $embeddableProperty : $field;
             }
             foreach ($classAndMappings['embeddables_association_classes'] as $prefix => $class) {
-                $classToEmbeddablesAssociationMapping[$class][$prefix] = $class;
+                $classToEmbeddablesAssociationMapping[$className][$prefix] = $class;
             }
             foreach ($classAndMappings['embeddables_embeddable_classes'] as $prefix => $class) {
-                $classToEmbeddablesEmbeddableMapping[$class][$prefix] = $class;
+                $classToEmbeddablesEmbeddableMapping[$className][$prefix] = $class;
             }
         }
         foreach ($classToPropertiesMapping as $className => $fieldsToProperties) {
