@@ -227,7 +227,7 @@ class JavascriptBuilders
      */
     private function filtersOverrideValues(array $filters): array
     {
-        foreach($filters as $key => $filter) {
+        foreach ($filters as $key => $filter) {
             // Php converts an array such as ["0" => "red", "1" => "green"] into [0 => "red", 1 => "green"]
             // Thus the json_encoding would be ["red", "green"] instead of {"0" : "red", "1" : "green"}
             // A way around this is casting the array as an object
@@ -236,7 +236,6 @@ class JavascriptBuilders
 
         return $filters;
     }
-
 
     /**
      * @param FilterValueCollection $collection
