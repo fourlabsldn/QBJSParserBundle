@@ -42,6 +42,7 @@ class JavascriptBuilders
             $config['filters'] = $this->filtersOverrides($config['filters'], $builderId);
             $config['filters'] = $this->filtersBooleanOverride($config['filters']); // override all booleans to display the same!
             $config['filters'] = $this->filtersDateOverrides($config['filters']); // override all dates to display the same!
+            $config['filters'] = $this->filtersOverrideValues($config['filters']); // override each filter's values
             $builder = new Builder();
             $builder
                 ->setBuilderId($builderId)
@@ -50,6 +51,7 @@ class JavascriptBuilders
             ;
             unset($config['class']);
             unset($config['human_readable_name']);
+
             $builder->setJsonString(json_encode($config));
 
             foreach ($config['result_columns'] as $column) {
@@ -101,6 +103,39 @@ class JavascriptBuilders
                 }
             }
             $filters[$key] = $filter;
+        }
+
+        return $filters;
+    }
+
+    /**
+     * @param array  $filters
+     * @param string $builderId
+     *
+     * @return array
+     *
+     * @throws \LogicException
+     */
+    private function filtersOverrides(array $filters, string $builderId) : array
+    {
+        foreach ($filters as $key => $filter) {
+            $filterId = $filter['id'];
+            $filterValueCollection = new FilterValueCollection();
+            $filterInput = new FilterInput(FilterInput::INPUT_TYPE_TEXT);
+            $filterOperators = new FilterOperators();
+            foreach ($filter['operators'] as $operator) {
+                $filterOperators->addOperator($operator);
+            }
+            $this->dispatcher->dispatch(FilterSetEvent::EVENT_NAME, new FilterSetEvent($filterInput, $filterOperators, $filterValueCollection, $filterId, $builderId));
+            $this->validateValueCollectionAgainstInput($filterValueCollection, $filterInput, $filterId, $builderId);
+
+            $valuesArray = [];
+            foreach ($filterValueCollection->getFilterValues() as $filterValue) {
+                $valuesArray[$filterValue->getValue()] = $filterValue->getLabel();
+            }
+            $filters[$key]['values'] = $valuesArray;
+            $filters[$key]['input'] = $filterInput->getInputType();
+            $filters[$key]['operators'] = $filterOperators->getOperators();
         }
 
         return $filters;
@@ -186,37 +221,22 @@ class JavascriptBuilders
     }
 
     /**
-     * @param array  $filters
-     * @param string $builderId
+     * @param array $filters
      *
      * @return array
-     *
-     * @throws \LogicException
      */
-    private function filtersOverrides(array $filters, string $builderId) : array
+    private function filtersOverrideValues(array $filters): array
     {
-        foreach ($filters as $key => $filter) {
-            $filterId = $filter['id'];
-            $filterValueCollection = new FilterValueCollection();
-            $filterInput = new FilterInput(FilterInput::INPUT_TYPE_TEXT);
-            $filterOperators = new FilterOperators();
-            foreach ($filter['operators'] as $operator) {
-                $filterOperators->addOperator($operator);
-            }
-            $this->dispatcher->dispatch(FilterSetEvent::EVENT_NAME, new FilterSetEvent($filterInput, $filterOperators, $filterValueCollection, $filterId, $builderId));
-            $this->validateValueCollectionAgainstInput($filterValueCollection, $filterInput, $filterId, $builderId);
-
-            $valuesArray = [];
-            foreach ($filterValueCollection->getFilterValues() as $filterValue) {
-                $valuesArray[$filterValue->getValue()] = $filterValue->getLabel();
-            }
-            $filters[$key]['values'] = $valuesArray;
-            $filters[$key]['input'] = $filterInput->getInputType();
-            $filters[$key]['operators'] = $filterOperators->getOperators();
+        foreach($filters as $key => $filter) {
+            // Php converts an array such as ["0" => "red", "1" => "green"] into [0 => "red", 1 => "green"]
+            // Thus the json_encoding would be ["red", "green"] instead of {"0" : "red", "1" : "green"}
+            // A way around this is casting the array as an object
+            $filters[$key]['values'] = (object) $filters[$key]['values'];
         }
 
         return $filters;
     }
+
 
     /**
      * @param FilterValueCollection $collection
