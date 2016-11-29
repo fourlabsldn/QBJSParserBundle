@@ -79,7 +79,6 @@ qbjs_parser:
                 # They can also be associations and their properties
                 # Leave the value as null (~) to use the same value as the key
                 id: ~
-                price: ~
                 labels.id: ~
                 labels.name: ~
                 labels.authors.id: ~
@@ -97,11 +96,16 @@ qbjs_parser:
                 availability.endDate: ~
                 labels.availability.startDate: ~
                 labels.availability.endDate: ~
+                price.amount: ~
+            embeddables_inside_embeddables_properties:
+                price.currency.code: ~
             embeddables_association_classes:
                 labels: AppBundle\Entity\Label
             embeddables_embeddable_classes:
                 availability: League\Period\Period
                 labels.availability: League\Period\Period
+                price: Money\Money
+                price.currency: Money\Currency
 ```
 
 ### Usage Example 
