@@ -9,8 +9,8 @@ This bundle is a symfony wrapper for the QBJSParser library. It has two useful s
     - The `ParsedRuleGroup` has two properties, `$dqlString` and `$parameters`, accessible via getters. 
     - Use the `ParsedRuleGroup` properties, to create a Doctrine Query. 
 - `fl_qbjs_parser.builders` based on class `FL\QBJSParserBundle\Service\JavascriptBuilders`
-    - Use the service's `getBuilders()`, to fetch an array of `FL\QBJSParserBundle\Model\Builder` instances.
-    - Each `Builder` comes with three properties, accessible via getters, `$className`, `$jsonString`, and `$humanReadableName`.
+    - Use the service's `getBuilders()`, to fetch an array of `FL\QBJSParserBundle\Model\Builder\Builder` instances.
+    - Each `Builder` comes with five properties, accessible via getters, `$className`, `$jsonString`, `$humanReadableName`, `$builderId`, and `$resultColumns`.
     - Use the properties of a `Builder`, to instantiate a JQuery Query Builder in your front-end.
 
 ### Installation
