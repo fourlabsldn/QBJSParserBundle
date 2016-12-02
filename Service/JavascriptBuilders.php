@@ -3,11 +3,11 @@
 namespace FL\QBJSParserBundle\Service;
 
 use FL\QBJSParserBundle\Event\Filter\FilterSetEvent;
-use FL\QBJSParserBundle\Model\Builder;
+use FL\QBJSParserBundle\Model\Builder\Builder;
 use FL\QBJSParserBundle\Model\Filter\FilterInput;
 use FL\QBJSParserBundle\Model\Filter\FilterOperators;
 use FL\QBJSParserBundle\Model\Filter\FilterValueCollection;
-use FL\QBJSParserBundle\Model\ResultColumn;
+use FL\QBJSParserBundle\Model\Builder\ResultColumn;
 use FL\QBJSParserBundle\Util\Validator\BuildersToMappings;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
