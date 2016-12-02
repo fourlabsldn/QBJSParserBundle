@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class FilterSetEvent extends Event
 {
-    const EVENT_NAME = 'qbjs_parser.filter_set_event';
+    const EVENT_NAME = 'fl_qbjs_parser.filter_set_event';
 
     /**
      * @var FilterInput

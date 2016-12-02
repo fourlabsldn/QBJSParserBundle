@@ -10,7 +10,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('qbjs_parser');
+        $rootNode = $treeBuilder->root('fl_qbjs_parser');
 
         $rootNode
             ->children()

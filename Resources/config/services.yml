@@ -1,14 +1,14 @@
 services:
-    qbjs_parser.json_deserializer:
+    fl_qbjs_parser.json_deserializer:
         class: FL\QBJSParser\Serializer\JsonDeserializer
-    qbjs_parser.json_query_parser:
+    fl_qbjs_parser.json_query_parser:
         class: FL\QBJSParserBundle\Service\JsonQueryParser
         arguments:
-            - "%qbjs_parser.doctrine_classes_and_mappings%"
-            - "@qbjs_parser.json_deserializer"
-    qbjs_parser.javascript_builders:
+            - "%fl_qbjs_parser.doctrine_classes_and_mappings%"
+            - "@fl_qbjs_parser.json_deserializer"
+    fl_qbjs_parser.javascript_builders:
         class: FL\QBJSParserBundle\Service\JavascriptBuilders
         arguments:
-            - "%qbjs_parser.builders%"
-            - "%qbjs_parser.doctrine_classes_and_mappings%"
+            - "%fl_qbjs_parser.builders%"
+            - "%fl_qbjs_parser.doctrine_classes_and_mappings%"
             - "@event_dispatcher" # needs symfony/http-kernel in composer.json

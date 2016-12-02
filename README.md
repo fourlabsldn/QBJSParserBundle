@@ -4,11 +4,11 @@
 
 This bundle is a symfony wrapper for the QBJSParser library. It has two useful services:
 
-- `qbjs_parser.json_query_parser` based on class `FL\QBJSParserBundle\Service\JsonQueryParser`
+- `fl_qbjs_parser.json_query_parser` based on class `FL\QBJSParserBundle\Service\JsonQueryParser`
     - This will parse a `$jsonString` coming from JQuery QueryBuilder, and a `$className`, into a `FL\QBJSParser\Parsed\Doctrine\ParsedRuleGroup`.
     - The `ParsedRuleGroup` has two properties, `$dqlString` and `$parameters`, accessible via getters. 
     - Use the `ParsedRuleGroup` properties, to create a Doctrine Query. 
-- `qbjs_parser.builders` based on class `FL\QBJSParserBundle\Service\JavascriptBuilders`
+- `fl_qbjs_parser.builders` based on class `FL\QBJSParserBundle\Service\JavascriptBuilders`
     - Use the service's `getBuilders()`, to fetch an array of `FL\QBJSParserBundle\Model\Builder` instances.
     - Each `Builder` comes with three properties, accessible via getters, `$className`, `$jsonString`, and `$humanReadableName`.
     - Use the properties of a `Builder`, to instantiate a JQuery Query Builder in your front-end.
@@ -24,7 +24,7 @@ This bundle is a symfony wrapper for the QBJSParser library. It has two useful s
     //...
     $bundles = [
         //...
-        new FL\QBJSParserBundle\QBJSParserBundle(),
+        new FL\QBJSParserBundle\FLQBJSParserBundle(),
     ];
 ```
 - Set up configuration, as detailed below.
@@ -32,8 +32,8 @@ This bundle is a symfony wrapper for the QBJSParser library. It has two useful s
 ### Configuration Example
 
 ```yml
-qbjs_parser:
-    builders: # these are used for service qbjs_parser.builders
+fl_qbjs_parser:
+    builders: # these are used for service fl_qbjs_parser.builders
         product_report_builder:
             class: AppBundle\Entity\Product # this class must exist in doctrine_class_and_mappings
             human_readable_name: 'Product Report Builder'
@@ -70,7 +70,7 @@ qbjs_parser:
                     id: availability.startDate
                     label: 'Product Availability - Start Date'
                     type: datetime
-    doctrine_classes_and_mappings: # these are used for service qbjs_parser.json_query_parser
+    doctrine_classes_and_mappings: # these are used for service fl_qbjs_parser.json_query_parser
         app_entity_product: # this key is for organizational purposes only
             class: AppBundle\Entity\Product # Class Name of a Doctrine Entity
             properties: # required
@@ -110,7 +110,7 @@ qbjs_parser:
 
 ### Usage Example 
 
-`qbjs_parser.json_query_parser`
+`fl_qbjs_parser.json_query_parser`
 
 ```php
 <?php
@@ -125,7 +125,7 @@ qbjs_parser:
     {
         public function reportsAction(Request $request, string $jsonString)
         {
-             $parsedRuleGroup = $this->get('qbjs_parser.json_query_parser')->parseJsonString($jsonString, Product::class);
+             $parsedRuleGroup = $this->get('fl_qbjs_parser.json_query_parser')->parseJsonString($jsonString, Product::class);
              
              $query = $this->get('doctrine.orm.entity_manager')->createQuery($parsedRuleGroup->getDqlString());
              $query->setParameters($parsedRuleGroup->getParameters());
@@ -136,7 +136,7 @@ qbjs_parser:
     } 
 ```
 
-`qbjs_parser.builders`
+`fl_qbjs_parser.builders`
 
 ```php
 <?php
@@ -150,7 +150,7 @@ qbjs_parser:
     {
         public function reportBuilderAction(Request $request)
         {
-             $builders = $this->get('qbjs_parser.builders')->getBuilders();
+             $builders = $this->get('fl_qbjs_parser.builders')->getBuilders();
                      
              return $this->render('default/index.html.twig', [
                  'builders' => $builders,
@@ -163,7 +163,7 @@ qbjs_parser:
 
 ### Events
 
-The bundle also comes with an event, that allows you to override `qbjs_parser.builders`. You can currently override values, the input type, and operators.
+The bundle also comes with an event, that allows you to override `fl_qbjs_parser.builders`. You can currently override values, the input type, and operators.
 
 Here's an example of the configuration for a listener, for such an event.
 
@@ -173,5 +173,5 @@ services:
         class: AppBundle\EventListener\OverrideBuildersListener
         arguments:
         tags:
-            - { name: kernel.event_listener, event: qbjs_parser.filter_set_event, method: onFilterSet }
+            - { name: kernel.event_listener, event: fl_qbjs_parser.filter_set_event, method: onFilterSet }
 ```
