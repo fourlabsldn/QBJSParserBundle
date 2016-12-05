@@ -82,7 +82,7 @@ abstract class BuildersToMappings
      * @param string $classProperty
      * @param string $builderId
      *
-     * @link http://symfony.com/doc/current/components/property_info.html#components-property-info-extractors
+     * @see http://symfony.com/doc/current/components/property_info.html#components-property-info-extractors
      *
      * @throws \InvalidArgumentException
      */

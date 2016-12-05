@@ -7,8 +7,8 @@ use FL\QBJSParser\Parsed\AbstractParsedRuleGroup;
 interface JsonQueryParserInterface
 {
     /**
-     * @param string $jsonString
-     * @param string $entityClassName
+     * @param string     $jsonString
+     * @param string     $entityClassName
      * @param array|null $sortColumns
      *
      * @return AbstractParsedRuleGroup

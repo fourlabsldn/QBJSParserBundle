@@ -68,7 +68,7 @@ class JavascriptBuilders
      *
      * @return array
      */
-    private function filtersDefaultOperators(array $filters) : array
+    private function filtersDefaultOperators(array $filters): array
     {
         foreach ($filters as $key => $filter) {
             // give the filter default operators, according to its type
@@ -116,7 +116,7 @@ class JavascriptBuilders
      *
      * @throws \LogicException
      */
-    private function filtersOverrides(array $filters, string $builderId) : array
+    private function filtersOverrides(array $filters, string $builderId): array
     {
         foreach ($filters as $key => $filter) {
             $filterId = $filter['id'];
@@ -146,7 +146,7 @@ class JavascriptBuilders
      *
      * @return array
      */
-    private function filtersBooleanOverride(array $filters) : array
+    private function filtersBooleanOverride(array $filters): array
     {
         foreach ($filters as $key => $filter) {
             $builderType = $filter['type'];
@@ -179,7 +179,7 @@ class JavascriptBuilders
      *
      * @return array
      */
-    private function filtersDateOverrides(array $filters) : array
+    private function filtersDateOverrides(array $filters): array
     {
         foreach ($filters as $key => $filter) {
             $builderType = $filter['type'];
