@@ -23,8 +23,9 @@ class FLQBJSParserExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('fl_qbjs_parser.builders', $config['builders']);
-        $container->setParameter('fl_qbjs_parser.doctrine_classes_and_mappings', $config['doctrine_classes_and_mappings']);
-
+        if (array_key_exists('doctrine_classes_and_mappings', $config)) {
+            $container->setParameter('fl_qbjs_parser.doctrine_classes_and_mappings', $config['doctrine_classes_and_mappings']);
+        }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

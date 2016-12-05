@@ -1,12 +1,12 @@
 <?php
 
-namespace FL\QBJSParserBundle\Service;
+namespace FL\QBJSParserBundle\Service\JsonQueryParser;
 
 use FL\QBJSParser\Parsed\Doctrine\ParsedRuleGroup;
 use FL\QBJSParser\Parser\Doctrine\DoctrineParser;
 use FL\QBJSParser\Serializer\JsonDeserializer;
 
-class JsonQueryParser
+class DoctrineORMParser implements DoctrineORMParserInterface
 {
     /**
      * @var DoctrineParser[]
@@ -74,7 +74,7 @@ class JsonQueryParser
      *
      * @return ParsedRuleGroup
      */
-    public function parseJsonString(string $jsonString, string $entityClassName, array $sortColumns = null) : ParsedRuleGroup
+    public function parseJsonString(string $jsonString, string $entityClassName, array $sortColumns = null): ParsedRuleGroup
     {
         $doctrineParser = $this->newParser($entityClassName);
 
