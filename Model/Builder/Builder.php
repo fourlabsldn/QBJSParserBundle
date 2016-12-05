@@ -125,7 +125,7 @@ class Builder
     /**
      * @return \SplObjectStorage
      */
-    public function getResultColumns() : \SplObjectStorage
+    public function getResultColumns(): \SplObjectStorage
     {
         return $this->resultColumns;
     }
@@ -135,7 +135,7 @@ class Builder
      *
      * @return Builder
      */
-    public function addResultColumn(ResultColumn $resultColumn) : Builder
+    public function addResultColumn(ResultColumn $resultColumn): Builder
     {
         // prevent columns with the same machine_name or human_readable_name to be added
         foreach ($this->resultColumns as $column) {
@@ -157,7 +157,7 @@ class Builder
      *
      * @return Builder
      */
-    public function removeResultColumn(ResultColumn $resultColumn) : Builder
+    public function removeResultColumn(ResultColumn $resultColumn): Builder
     {
         $this->resultColumns->detach($resultColumn);
 
