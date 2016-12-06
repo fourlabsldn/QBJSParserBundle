@@ -18,7 +18,7 @@ class JavascriptBuilders
      *
      * @var Builder[]
      */
-    private $builders;
+    protected $builders;
 
     /**
      * @var EventDispatcherInterface
