@@ -1,6 +1,7 @@
 #QBJSParserBundle
 
 [![StyleCI](https://styleci.io/repos/68914794/shield?branch=master)](https://styleci.io/repos/68914794)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/fourlabsldn/QBJSParserBundle/master/LICENSE)
 
 This bundle is a symfony wrapper for the QBJSParser library. It has two useful services:
 
