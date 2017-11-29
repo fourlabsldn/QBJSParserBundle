@@ -132,7 +132,7 @@ fl_qbjs_parser:
         {
              $parsedRuleGroup = $this->get('fl_qbjs_parser.json_query_parser.doctrine_orm_parser')->parseJsonString($jsonString, Product::class);
              
-             $query = $this->get('doctrine.orm.entity_manager')->createQuery($parsedRuleGroup->getDqlString());
+             $query = $this->get('doctrine.orm.entity_manager')->createQuery($parsedRuleGroup->getQueryString());
              $query->setParameters($parsedRuleGroup->getParameters());
              $results = $query->execute();
              
