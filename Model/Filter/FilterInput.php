@@ -5,9 +5,13 @@ namespace FL\QBJSParserBundle\Model\Filter;
 class FilterInput
 {
     const INPUT_TYPE_TEXT = 'text';
+
     const INPUT_TYPE_TEXTAREA = 'textarea';
+
     const INPUT_TYPE_RADIO = 'radio';
+
     const INPUT_TYPE_CHECKBOX = 'checkbox';
+
     const INPUT_TYPE_SELECT = 'select';
 
     const VALID_INPUT_TYPES = [
@@ -52,7 +56,7 @@ class FilterInput
      *
      * @return FilterInput
      */
-    public function setInputType(string $inputType): FilterInput
+    public function setInputType(string $inputType): self
     {
         $this->inputType = $inputType;
         $this->validate();

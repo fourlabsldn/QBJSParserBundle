@@ -49,7 +49,7 @@ class Builder
      *
      * @return Builder
      */
-    public function setClassName(string $className): Builder
+    public function setClassName(string $className): self
     {
         if (!class_exists($className)) {
             throw new \InvalidArgumentException(sprintf(
@@ -75,7 +75,7 @@ class Builder
      *
      * @return Builder
      */
-    public function setJsonString(string $jsonString): Builder
+    public function setJsonString(string $jsonString): self
     {
         $this->jsonString = $jsonString;
 
@@ -95,7 +95,7 @@ class Builder
      *
      * @return Builder
      */
-    public function setHumanReadableName(string $humanReadableName): Builder
+    public function setHumanReadableName(string $humanReadableName): self
     {
         $this->humanReadableName = $humanReadableName;
 
@@ -115,7 +115,7 @@ class Builder
      *
      * @return Builder
      */
-    public function setBuilderId(string $builderId): Builder
+    public function setBuilderId(string $builderId): self
     {
         $this->builderId = $builderId;
 
@@ -135,7 +135,7 @@ class Builder
      *
      * @return Builder
      */
-    public function addResultColumn(ResultColumn $resultColumn): Builder
+    public function addResultColumn(ResultColumn $resultColumn): self
     {
         // prevent columns with the same machine_name or human_readable_name to be added
         foreach ($this->resultColumns as $column) {
@@ -157,7 +157,7 @@ class Builder
      *
      * @return Builder
      */
-    public function removeResultColumn(ResultColumn $resultColumn): Builder
+    public function removeResultColumn(ResultColumn $resultColumn): self
     {
         $this->resultColumns->detach($resultColumn);
 

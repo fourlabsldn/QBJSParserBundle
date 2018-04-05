@@ -84,6 +84,7 @@ class JavascriptBuilders
                             'equal', 'not_equal', 'is_null', 'is_not_null',
                             'begins_with', 'not_begins_with', 'contains', 'not_contains', 'ends_with', 'not_ends_with', 'is_empty', 'is_not_empty', // specific to strings
                         ];
+
                         break;
                     case 'integer':
                     case 'double':
@@ -94,11 +95,13 @@ class JavascriptBuilders
                             'equal', 'not_equal', 'is_null', 'is_not_null',
                             'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', // specific to numbers and dates
                         ];
+
                         break;
                     case 'boolean':
                         $filter['operators'] = [
                             'equal', 'not_equal', 'is_null', 'is_not_null',
                         ];
+
                         break;
                 }
             }
@@ -162,6 +165,7 @@ class JavascriptBuilders
                         1 => 'success',
                         0 => 'danger',
                     ];
+
                     break;
             }
 
@@ -193,6 +197,7 @@ class JavascriptBuilders
                     $filter['plugin_config'] = [
                         'format' => 'YYYY/MM/DD',
                     ];
+
                     break;
                 case 'datetime':
                     $filter['validation'] = [
@@ -202,6 +207,7 @@ class JavascriptBuilders
                     $filter['plugin_config'] = [
                         'format' => 'YYYY/MM/DD HH:mm',
                     ];
+
                     break;
                 case 'time':
                     $filter['validation'] = [
@@ -211,6 +217,7 @@ class JavascriptBuilders
                     $filter['plugin_config'] = [
                         'format' => 'HH:mm',
                     ];
+
                     break;
             }
 
@@ -249,7 +256,7 @@ class JavascriptBuilders
     {
         if (
             in_array($input->getInputType(), FilterInput::INPUT_TYPES_REQUIRE_NO_VALUES) &&
-            $collection->getFilterValues()->count() !== 0
+            0 !== $collection->getFilterValues()->count()
         ) {
             throw new \LogicException(sprintf(
                 'Too many values found, While building, Builder with ID %s and Filter with ID %s.',
@@ -259,7 +266,7 @@ class JavascriptBuilders
         }
         if (
             in_array($input->getInputType(), FilterInput::INPUT_TYPES_REQUIRE_MULTIPLE_VALUES) &&
-            $collection->getFilterValues()->count() === 0
+            0 === $collection->getFilterValues()->count()
         ) {
             throw new \LogicException(sprintf(
                 'Not enough values found, While building, Builder with ID %s and Filter with ID %s.',
