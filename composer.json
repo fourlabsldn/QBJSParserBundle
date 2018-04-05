@@ -17,10 +17,9 @@
       "homepage": "https://fourlabs.co.uk/"
     }
   ],
-  "minimum-stability": "dev",
   "require": {
     "php": "^7.0",
-    "fourlabs/qbjs-parser": "dev-master",
+    "fourlabs/qbjs-parser": "1.0.0",
     "symfony/config": "~2.8|~3.0|~3.1",
     "symfony/dependency-injection": "~2.8|~3.0|~3.1",
     "symfony/http-kernel": "~2.8|~3.0|~3.1",

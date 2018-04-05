@@ -31,7 +31,7 @@ class FilterOperators
      *
      * @throws \InvalidArgumentException
      */
-    public function setOperators(array $operators): FilterOperators
+    public function setOperators(array $operators): self
     {
         foreach ($operators as $operator) {
             $this->validateOperator($operator);
@@ -48,7 +48,7 @@ class FilterOperators
      *
      * @throws \InvalidArgumentException
      */
-    public function addOperator(string $operator): FilterOperators
+    public function addOperator(string $operator): self
     {
         $this->validateOperator($operator);
         if (!in_array($operator, $this->operators)) {
@@ -65,10 +65,10 @@ class FilterOperators
      *
      * @throws \InvalidArgumentException
      */
-    public function removeOperator(string $operator): FilterOperators
+    public function removeOperator(string $operator): self
     {
         $this->validateOperator($operator);
-        if (($key = array_search($operator, $this->operators)) !== false) {
+        if (false !== ($key = array_search($operator, $this->operators))) {
             unset($this->operators[$key]);
         }
 
@@ -78,7 +78,7 @@ class FilterOperators
     /**
      * @return FilterOperators
      */
-    public function clearOperators(): FilterOperators
+    public function clearOperators(): self
     {
         $this->operators = [];
 
