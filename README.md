@@ -1,9 +1,14 @@
-#QBJSParserBundle
+# QBJSParserBundle
 
 [![StyleCI](https://styleci.io/repos/68914794/shield?branch=master)](https://styleci.io/repos/68914794)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/fourlabsldn/QBJSParserBundle/master/LICENSE)
 
-This bundle is a symfony wrapper for the QBJSParser library. It has two useful services:
+This is a Symfony bundle, which can be used with [jQuery QueryBuilder](http://querybuilder.js.org/). 
+- It will **parse JSON coming from the frontend, and let you execute it as a Doctrine ORM query**.
+- It will **give you JSON to generate the frontend**, based on your Doctrine ORM entities and configuration. 
+- It is based on [QBJSParser](https://github.com/fourlabsldn/QBJSParser), which can be used without Symfony.
+
+It has two useful services:
 
 - `fl_qbjs_parser.json_query_parser.doctrine_orm_parser` based on class `FL\QBJSParserBundle\Service\JsonQueryParser\DoctrineORMParser`
     - This will parse a `$jsonString` coming from JQuery QueryBuilder, and a `$className`, into a `FL\QBJSParser\Parsed\Doctrine\ParsedRuleGroup`.
