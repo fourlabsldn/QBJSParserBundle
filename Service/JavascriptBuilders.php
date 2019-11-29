@@ -258,21 +258,13 @@ class JavascriptBuilders
             in_array($input->getInputType(), FilterInput::INPUT_TYPES_REQUIRE_NO_VALUES) &&
             0 !== $collection->getFilterValues()->count()
         ) {
-            throw new \LogicException(sprintf(
-                'Too many values found, While building, Builder with ID %s and Filter with ID %s.',
-                $builderId,
-                $filterId
-            ));
+            throw new \LogicException(sprintf('Too many values found, While building, Builder with ID %s and Filter with ID %s.', $builderId, $filterId));
         }
         if (
             in_array($input->getInputType(), FilterInput::INPUT_TYPES_REQUIRE_MULTIPLE_VALUES) &&
             0 === $collection->getFilterValues()->count()
         ) {
-            throw new \LogicException(sprintf(
-                'Not enough values found, While building, Builder with ID %s and Filter with ID %s.',
-                $builderId,
-                $filterId
-            ));
+            throw new \LogicException(sprintf('Not enough values found, While building, Builder with ID %s and Filter with ID %s.', $builderId, $filterId));
         }
     }
 

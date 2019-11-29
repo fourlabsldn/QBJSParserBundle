@@ -91,10 +91,7 @@ class DoctrineORMParser implements DoctrineORMParserInterface
     private function newParser(string $className)
     {
         if (!array_key_exists($className, $this->classNameToDoctrineParser)) {
-            throw new \DomainException(sprintf(
-                'You have requested a Doctrine Parser for %s, but you have not defined a mapping for it in your configuration',
-                $className
-            ));
+            throw new \DomainException(sprintf('You have requested a Doctrine Parser for %s, but you have not defined a mapping for it in your configuration', $className));
         }
 
         return $this->classNameToDoctrineParser[$className];

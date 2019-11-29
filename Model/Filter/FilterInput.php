@@ -70,9 +70,7 @@ class FilterInput
     private function validate()
     {
         if (!in_array($this->inputType, self::VALID_INPUT_TYPES)) {
-            throw new \InvalidArgumentException(sprintf(
-                '%s is not a valid input type'
-            ), $this->inputType);
+            throw new \InvalidArgumentException(sprintf('%s is not a valid input type'), $this->inputType);
         }
     }
 }

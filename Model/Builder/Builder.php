@@ -52,10 +52,7 @@ class Builder
     public function setClassName(string $className): self
     {
         if (!class_exists($className)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Class %s does not exist',
-                $className
-            ));
+            throw new \InvalidArgumentException(sprintf('Class %s does not exist', $className));
         }
         $this->className = $className;
 

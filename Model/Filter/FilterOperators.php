@@ -93,9 +93,7 @@ class FilterOperators
     private function validateOperator(string $operator)
     {
         if (!in_array($operator, self::VALID_OPERATORS)) {
-            throw new \InvalidArgumentException(sprintf(
-                '%s is not a valid operator'
-            ), $operator);
+            throw new \InvalidArgumentException(sprintf('%s is not a valid operator'), $operator);
         }
     }
 }
